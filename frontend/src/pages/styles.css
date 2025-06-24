@@ -9,14 +9,27 @@
     margin-top: 8rem;
     text-align: center;
   }
+
+  .change-password-page{
+    max-width: 400px;
+    margin: auto;
+    padding: 1.5rem;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px #8500cc;
+    border-radius: 12px;
+    margin-top: 3rem;
+    text-align: center;
+  }
   
   .login-page h2,
-  .register-page h2 {
+  .register-page h2,
+  .change-password-page h2 {
     margin-bottom: 1rem;
   }
   
   .login-page input, 
-  .register-page input {
+  .register-page input,
+  .change-password-page input {
     margin: 1rem;
     width: 80%;
     padding: 0.6rem;
@@ -25,7 +38,8 @@
   }
   
   .login-page button, 
-  .register-page button {
+  .register-page button,
+  .change-password-page button {
     padding: 0.6rem 1.2rem;
     margin-right: 0.5rem;
     border: none;
@@ -45,6 +59,16 @@
     text-decoration: none;
     cursor: pointer;
   }
+
+  .change-password-page li{
+    text-align: left;
+    margin: 0.5rem 0;
+  }
+
+  .change-password-page li::marker {
+    color: #8500cc;
+  }
+  
   
   
   
