@@ -1,9 +1,12 @@
 package com.github.larybino.leilao.model;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,5 +26,9 @@ public class Person {
     @NotBlank(message = "{validation.email.notblank}")
     private String email;
     private String password;
+    private String validateCode;
+    private Date validateCodeExpiration;
+    private boolean active;
+    private Lob profilePicture;
 
 }

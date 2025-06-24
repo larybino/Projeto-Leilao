@@ -56,6 +56,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
         
-    
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> business(BusinessException ex, WebRequest request){
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNPROCESSABLE_ENTITY.value(),
+        "Business Error", 
+        ex.getMessage(),
+        request.getDescription(false),
+        null
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
     
 }
