@@ -3,6 +3,7 @@ package com.github.larybino.leilao.model;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
