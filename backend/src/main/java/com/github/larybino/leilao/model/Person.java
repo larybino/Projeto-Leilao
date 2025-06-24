@@ -8,8 +8,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Entity
@@ -25,10 +28,14 @@ public class Person {
     @Email(message = "{validation.email.valid}")
     @NotBlank(message = "{validation.email.notblank}")
     private String email;
+    @NotBlank(message = "{validation.password.notblank}")
+    @Size(min=8, message= "{validation.password.size}")
     private String password;
     private String validateCode;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date validateCodeExpiration;
     private boolean active;
-    private Lob profilePicture;
+    @Lob
+    private byte[] profilePicture;
 
 }
