@@ -1,5 +1,6 @@
 // pages/ChangePassword.jsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./styles.css";
 
 const passwordRules = {
@@ -20,10 +21,12 @@ function ChangePassword() {
 
   const [errors, setErrors] = useState([]);
 
+  const navigate = useNavigate();
+
   const validatePassword = (value) => {
     const newErrors = Object.values(passwordRules)
-      .filter(rule => !rule.regex.test(value))
-      .map(rule => rule.message);
+      .filter((rule) => !rule.regex.test(value))
+      .map((rule) => rule.message);
     setErrors(newErrors);
   };
 
@@ -45,7 +48,6 @@ function ChangePassword() {
 
     if (errors.length === 0) {
       alert("Senha alterada com sucesso!");
-      // Aqui você integraria com o backend ou lógica de persistência
     }
   };
 
@@ -53,23 +55,53 @@ function ChangePassword() {
     <div className="change-password-page">
       <h2>Alterar Senha</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="E-mail" required />
-        <input type="text" name="code" value={form.code} onChange={handleChange} placeholder="Código" required />
-        <input type="password" name="password" value={form.password} onChange={handleChange} placeholder="Nova Senha" required />
-        <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Confirmar Senha" required />
-        
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="E-mail"
+          required
+        />
+        <input
+          type="text"
+          name="code"
+          value={form.code}
+          onChange={handleChange}
+          placeholder="Código"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Nova Senha"
+          required
+        />
+        <input
+          type="password"
+          name="confirmPassword"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          placeholder="Confirmar Senha"
+          required
+        />
+
         <ul className="validation-list">
-          {Object.values(passwordRules).map(rule => (
-            <li key={rule.message} className={rule.regex.test(form.password) ? "valid" : "invalid"}>
+          {Object.values(passwordRules).map((rule) => (
+            <li
+              key={rule.message}
+              className={rule.regex.test(form.password) ? "valid" : "invalid"}
+            >
               {rule.message}
             </li>
           ))}
         </ul>
-
-        <div className="button-group">
-          <button type="submit">Alterar Senha</button>
-          <button type="button" onClick={() => alert("Cancelado")}>Cancelar</button>
-        </div>
+        <button type="submit">Alterar Senha</button>
+        <button type="button" onClick={() => navigate("/")}>
+          Cancelar
+        </button>
       </form>
     </div>
   );

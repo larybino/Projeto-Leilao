@@ -46,7 +46,7 @@ function Login() {
         <button type="submit">Login</button>
       </form>
       <p>
-        Don't have an account?{" "}
+        Não possui uma conta?{" "}
         <span
           onClick={() => navigate("/register")}
         >
@@ -57,7 +57,7 @@ function Login() {
         <span
           onClick={() => navigate("/forgot-password")}
         >
-          Forgot Password?
+          Esqueceu a senha?
         </span>
       </p>
     </div>
