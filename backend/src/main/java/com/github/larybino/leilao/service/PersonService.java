@@ -1,11 +1,13 @@
 package com.github.larybino.leilao.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
 
 import com.github.larybino.leilao.exception.NotFoundException;
 import com.github.larybino.leilao.model.Person;
@@ -18,11 +20,26 @@ public class PersonService {
     private PersonRepository personRepository;
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private EmailService emailService;
 
     public Person create(Person person) {
-        return personRepository.save(person);
+        Person registerPerson = personRepository.save(person);
+        //emailService.sendEmail(registerPerson.getEmail(), "Cadastro com Sucesso!", "Olá " + registerPerson.getName() + ",\n\nSeu cadastro foi realizado com sucesso no sistema de leilão.\n\nAtenciosamente,\nEquipe de Leilão");
+        sendEmailSuccess(registerPerson);
+        return registerPerson;
     }
 
+    private void sendEmailSuccess(Person person) {
+        Context context = new Context(LocaleContextHolder.getLocale());
+        context.setVariable("name", person.getName());
+        emailService.sendEmailWithTemplate(
+            person.getEmail(),
+            "Cadastro realizado com sucesso!",
+            context,
+            "registerSuccess"
+        );
+    }
     public Person update(Person person) {
         //return personRepository.save(person);
         Person existingPerson= findById(person.getId());
@@ -44,7 +61,7 @@ public class PersonService {
                         LocaleContextHolder.getLocale())));
     }
 
-    public List<Person> findAll() {
-        return personRepository.findAll();
+    public Page<Person> findAll(Pageable pageable) {
+        return personRepository.findAll(pageable);
     }   
 }
