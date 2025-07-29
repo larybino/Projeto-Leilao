@@ -1,6 +1,5 @@
 package com.github.larybino.leilao.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,41 +13,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.larybino.leilao.model.Person;
-import com.github.larybino.leilao.service.PersonService;
+import com.github.larybino.leilao.model.Profile;
+import com.github.larybino.leilao.service.ProfileService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/person")
-public class PersonController {
-    
+@RequestMapping("/profile")
+public class ProfileController {
     @Autowired
-    private PersonService personService;
+    public ProfileService profileService;
+
 
     @GetMapping
-    public ResponseEntity<Page<Person>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(personService.findAll(pageable));
+    public ResponseEntity<Page<Profile>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(profileService.findAll(pageable));
     } 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Person> findById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(personService.findById(id));
-    }
-
     @PostMapping
-    public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
-        return ResponseEntity.ok(personService.create(person));
+    public ResponseEntity<Profile> create(@Valid @RequestBody Profile profile) {
+        return ResponseEntity.ok(profileService.create(profile));
     }
 
     @PutMapping
-    public ResponseEntity<Person> update(@Valid @RequestBody Person person) {
-        return ResponseEntity.ok(personService.update(person));
+    public ResponseEntity<Profile> update(@Valid @RequestBody Profile profile) {
+        return ResponseEntity.ok(profileService.update(profile));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        personService.delete(id);
+        profileService.delete(id);
         return ResponseEntity.ok("Person with ID " + id + " deleted successfully.");
 
     }

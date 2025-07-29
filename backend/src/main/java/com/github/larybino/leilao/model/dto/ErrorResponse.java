@@ -1,4 +1,4 @@
-package com.github.larybino.leilao.dto;
+package com.github.larybino.leilao.model.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
-import com.github.larybino.leilao.dto.ErrorResponse;
+import com.github.larybino.leilao.model.dto.ErrorResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
