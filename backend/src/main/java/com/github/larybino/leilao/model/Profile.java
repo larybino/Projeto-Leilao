@@ -1,5 +1,7 @@
 package com.github.larybino.leilao.model;
 
+import com.github.larybino.leilao.enums.ProfileType;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

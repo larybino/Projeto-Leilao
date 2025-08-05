@@ -3,7 +3,6 @@ package com.github.larybino.leilao.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,43 +13,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.larybino.leilao.model.Person;
-import com.github.larybino.leilao.service.PersonService;
+import com.github.larybino.leilao.model.Payment;
+import com.github.larybino.leilao.service.PaymentService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/person")
-public class PersonController {
-
+@RequestMapping("/payments")
+public class PaymentController {
     @Autowired
-    private PersonService personService;
+    private PaymentService paymentService;
 
     @GetMapping
-    public ResponseEntity<Page<Person>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(personService.findAll(pageable));
+    public ResponseEntity<Page<Payment>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(paymentService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> findById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(personService.findById(id));
+    public ResponseEntity<Payment> findById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(paymentService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody Person person) {
-        personService.create(person);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Payment> create(@Valid @RequestBody Payment payment) {
+        return ResponseEntity.ok(paymentService.create(payment));
     }
 
-    @PutMapping
-    public ResponseEntity<Person> update(@Valid @RequestBody Person person) {
-        return ResponseEntity.ok(personService.update(person));
+    @PutMapping("/{id}")
+    public ResponseEntity<Payment> update(@PathVariable("id") Long id, @Valid @RequestBody Payment payment) {
+        payment.setId(id);
+        return ResponseEntity.ok(paymentService.update(payment));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        personService.delete(id);
-        return ResponseEntity.ok("Person with ID " + id + " deleted successfully.");
+        paymentService.delete(id);
+        return ResponseEntity.ok("Payment with ID " + id + " deleted successfully.");
 
     }
+
 }

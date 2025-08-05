@@ -3,7 +3,6 @@ package com.github.larybino.leilao.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,43 +13,43 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.github.larybino.leilao.model.Person;
-import com.github.larybino.leilao.service.PersonService;
+import com.github.larybino.leilao.model.Bid;
+import com.github.larybino.leilao.service.BidService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/person")
-public class PersonController {
-
+@RequestMapping("/bid")
+public class BidController {
     @Autowired
-    private PersonService personService;
-
+    private BidService bidService;
+ 
     @GetMapping
-    public ResponseEntity<Page<Person>> findAll(Pageable pageable) {
-        return ResponseEntity.ok(personService.findAll(pageable));
+    public ResponseEntity<Page<Bid>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(bidService.findAll(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Person> findById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(personService.findById(id));
+    public ResponseEntity<Bid> findById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(bidService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody Person person) {
-        personService.create(person);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<Bid> create(@Valid @RequestBody Bid bid) {
+        return ResponseEntity.ok(bidService.create(bid));
     }
 
-    @PutMapping
-    public ResponseEntity<Person> update(@Valid @RequestBody Person person) {
-        return ResponseEntity.ok(personService.update(person));
+    @PutMapping("/{id}")
+    public ResponseEntity<Bid> update(@PathVariable("id") Long id, @Valid @RequestBody Bid bid) {
+        bid.setId(id);
+        return ResponseEntity.ok(bidService.update(bid));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id) {
-        personService.delete(id);
-        return ResponseEntity.ok("Person with ID " + id + " deleted successfully.");
+        bidService.delete(id);
+        return ResponseEntity.ok("Bid with ID " + id + " deleted successfully.");
 
     }
+
 }
