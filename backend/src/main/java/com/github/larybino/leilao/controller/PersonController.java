@@ -42,7 +42,7 @@ public class PersonController {
         return ResponseEntity.ok(personService.findById(id));
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Person> create(@Valid @RequestBody PersonDTO person) {
         Person createdPerson = personService.create(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);
@@ -82,12 +82,12 @@ public class PersonController {
     public ResponseEntity<String> changePassword(
             @AuthenticationPrincipal Person authenticatedUser,
             @RequestBody ChangePasswordRequest request) {
+        System.out.println("Usuario autenticado: " + authenticatedUser);
         try {
             personService.changePassword(
-                authenticatedUser.getEmail(),
-                request.getOldPassword(),
-                request.getNewPassword()
-            );
+                    authenticatedUser.getEmail(),
+                    request.getOldPassword(),
+                    request.getNewPassword());
             return ResponseEntity.ok("Senha alterada com sucesso.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

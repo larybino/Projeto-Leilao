@@ -40,6 +40,8 @@ function ChangePassword() {
 
     setLoading(true);
     try {
+      console.log("Token atual:", JSON.parse(localStorage.getItem('usuario')));
+
       await personService.changePassword({
         oldPassword: form.oldPassword,
         newPassword: form.newPassword,
