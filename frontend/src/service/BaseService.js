@@ -25,6 +25,11 @@ async getAll(){
     const response = await this.api.get(this.endPoint);
     return response;
 }
+
+async getById(id){
+    const response = await this.api.get(`${this.endPoint}/${id}`);
+    return response;
+}
 }
 
 export default BaseService;

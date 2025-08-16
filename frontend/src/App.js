@@ -10,6 +10,8 @@ import LayoutBasic from "./component/layout/LayoutBasic";
 import ProfileService from "./service/ProfileService";
 import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider } from "./service/AuthContext";
+import PersonListPage from "./pages/PersonListPage";
+import PersonEdit from "./pages/PersonEdit";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
           <Route element={<PrivateRouteLayout />}>
             <Route path="/home" element={<LayoutBasic><Home /></LayoutBasic>} />
             <Route path="/profile" element={<LayoutBasic><ProfileService /></LayoutBasic>} />
+            <Route path="/pessoas" element={<LayoutBasic><PersonListPage /></LayoutBasic>} />
+            <Route path="/pessoas/:id" element={<LayoutBasic><PersonEdit /></LayoutBasic>} />
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

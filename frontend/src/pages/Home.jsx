@@ -5,7 +5,7 @@ const Home = () => {
 
       <ul>
         <li><a href="/change-password">Change Password</a></li>
-
+        <li><a href="/pessoas">Gerenciar Pessoas</a></li>
       </ul>
     </div>
   );
