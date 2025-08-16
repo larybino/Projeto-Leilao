@@ -9,21 +9,24 @@ import PrivateRouteLayout from "./component/layout/PrivateRouteLayout";
 import LayoutBasic from "./component/layout/LayoutBasic";
 import ProfileService from "./service/ProfileService";
 import ResetPassword from "./pages/ResetPassword";
+import { AuthProvider } from "./service/AuthContext";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<PrivateRouteLayout />}>
-          <Route path="/home" element={<LayoutBasic><Home /></LayoutBasic>} />
-          <Route path="/profile" element={<LayoutBasic><ProfileService /></LayoutBasic>} />
-        </Route>
+      <AuthProvider>
+        <Routes>
+          <Route element={<PrivateRouteLayout />}>
+            <Route path="/home" element={<LayoutBasic><Home /></LayoutBasic>} />
+            <Route path="/profile" element={<LayoutBasic><ProfileService /></LayoutBasic>} />
+          </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/change-password" element={<ChangePassword />} />
       </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
