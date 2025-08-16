@@ -1,74 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import './styles.css';
 import PersonService from "../service/PersonService";
+import ProfileService from "../service/ProfileService";
 import { toast } from 'react-toastify';
+import './styles.css';
 
-function Register(){
-    const [form, setForm] = useState({ name: "", email: "" });
+function Register() {
+    const [form, setForm] = useState({ name: "", email: "", password: "", profileIds: [] });
+    const [perfils, setPerfils] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
-  
+
+    useEffect(() => {
+        ProfileService.getAll()
+            .then(response => setPerfils(response.data.content || []))
+            .catch(() => toast.error("Falha ao buscar perfis."));
+    }, []);
+
     const handleChange = (e) => {
-      const { name, value } = e.target;
-      setForm({ ...form, [name]: value });
+        const { name, value, options } = e.target;
+
+        if (name === "profileIds") {
+            const selectedIds = Array.from(options).filter(o => o.selected).map(o => parseInt(o.value));
+            setForm({ ...form, profileIds: selectedIds });
+        } else {
+            setForm({ ...form, [name]: value });
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await PersonService.create(form);
+            await PersonService.register(form);
             toast.success("Cadastro realizado com sucesso! Agora você pode fazer o login.");
             navigate('/login'); 
         } catch (error) {
-            console.error("Erro no cadastro:", error);
             const errorMessage = error.response?.data?.message || "Falha no cadastro. Verifique seus dados.";
             toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
-      };
+    };
 
     return (
-    <div className="register-page">
-        <h2>Cadastra-se</h2>
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Nome"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                required
-            />
-            <input
-                type="email"
-                placeholder="Email"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-            />
-            <input
-                type="password"
-                placeholder="Senha"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-            />
-            <button type="submit" disabled={loading}>{loading ? 'Cadastrando...' : 'Cadastrar'}</button>
-        </form>
-        <p>
-        Já possui uma conta?{" "}
-        <span
-          onClick={() => navigate("/login")}
-        >
-          Login
-        </span>
-      </p>
-    </div>
-    )
+        <div className="register-page">
+            <h2>Cadastrar-se</h2>
+            <form onSubmit={handleSubmit} className="register-form">
+                <input type="text" name="name" placeholder="Nome" value={form.name} onChange={handleChange} required />
+                <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+                <input type="password" name="password" placeholder="Senha" value={form.password} onChange={handleChange} required />
+
+                <label>Selecione o(s) perfil(is):</label>
+                <select
+                    name="profileIds"
+                    multiple
+                    value={form.profileIds}
+                    onChange={handleChange}
+                    className="select-multiple"
+                >
+                    {perfils.map(p => (
+                        <option key={p.id} value={p.id}>{p.type}</option>
+                    ))}
+                </select>
+
+                <button type="submit" disabled={loading}>{loading ? 'Cadastrando...' : 'Cadastrar'}</button>
+            </form>
+            <p className="login-link">
+                Já possui conta? <span onClick={() => navigate("/login")}>Login</span>
+            </p>
+        </div>
+    );
 }
+
 export default Register;

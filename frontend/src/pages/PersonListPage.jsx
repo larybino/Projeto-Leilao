@@ -50,6 +50,7 @@ function PersonListPage() {
                         <tr>
                             <th>Nome</th>
                             <th>Email</th>
+                            <th>Perfis</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -58,6 +59,11 @@ function PersonListPage() {
                             <tr key={pessoa.id}>
                                 <td>{pessoa.name}</td>
                                 <td>{pessoa.email}</td>
+                                <td>
+                                    {pessoa.personProfile && pessoa.personProfile.length > 0
+                                        ? pessoa.personProfile.map(pp => pp.profile?.type).join(', ')
+                                        : '—'}
+                                </td>
                                 <td>
                                     <Link to={`/pessoas/${pessoa.id}`} className="btn btn-edit">Editar</Link>
                                     <button onClick={() => handleDelete(pessoa.id)} className="btn btn-delete">Excluir</button>

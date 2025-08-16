@@ -5,6 +5,10 @@ class PersonService extends BaseService {
     super("/person");
   }
 
+  register(data) {
+    return this.api.post(`${this.endPoint}/register`, data);
+  }
+
   async recoverPassword(emailData) {
     const response = await this.api.post(
       `${this.endPoint}/recover-password`,
