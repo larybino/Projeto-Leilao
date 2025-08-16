@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import com.github.larybino.leilao.exception.NotFoundException;
@@ -106,13 +107,14 @@ public class PersonService implements UserDetailsService{
             throw new IllegalArgumentException("Código expirado");
         }
 
-        person.setPassword(newPassword);
+        person.setPassword(passwordEncoder.encode(newPassword));
         person.setRecoveryCode(null);
         person.setRecoveryCodeExpiration(null);
 
         personRepository.save(person);
     }
 
+    @Transactional
     public void changePassword(String email, String oldPassword, String newPassword) {
         Person person = personRepository.findByEmail(email)
             .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
