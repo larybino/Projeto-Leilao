@@ -23,7 +23,7 @@ function Header() {
         {user && (
           <div className="menu">
             <NavLink to="/pessoas">Pessoas</NavLink>
-            <NavLink to="/leiloes">Leilões</NavLink>
+            <NavLink to="/profile">Perfis</NavLink>
             <button onClick={handleLogout}>Logout</button>
           </div>
         )}

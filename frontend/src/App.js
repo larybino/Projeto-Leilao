@@ -7,11 +7,12 @@ import "./App.css";
 import Home from "./pages/Home";
 import PrivateRouteLayout from "./component/layout/PrivateRouteLayout";
 import LayoutBasic from "./component/layout/LayoutBasic";
-import ProfileService from "./service/ProfileService";
 import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider } from "./service/AuthContext";
 import PersonListPage from "./pages/PersonListPage";
 import PersonEdit from "./pages/PersonEdit";
+import ProfileListPage from "./pages/ProfileList";
+import ProfileFormPage from "./pages/ProfileForm";
 
 function App() {
   return (
@@ -20,7 +21,9 @@ function App() {
         <Routes>
           <Route element={<PrivateRouteLayout />}>
             <Route path="/home" element={<LayoutBasic><Home /></LayoutBasic>} />
-            <Route path="/profile" element={<LayoutBasic><ProfileService /></LayoutBasic>} />
+            <Route path="/profile" element={<LayoutBasic><ProfileListPage /></LayoutBasic>} />
+            <Route path="/profile/novo" element={<LayoutBasic><ProfileFormPage /></LayoutBasic>} />
+            <Route path="/profile/:id" element={<LayoutBasic><ProfileFormPage /></LayoutBasic>} />
             <Route path="/pessoas" element={<LayoutBasic><PersonListPage /></LayoutBasic>} />
             <Route path="/pessoas/:id" element={<LayoutBasic><PersonEdit /></LayoutBasic>} />
           </Route>
