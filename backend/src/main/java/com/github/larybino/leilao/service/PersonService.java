@@ -20,6 +20,7 @@ import org.thymeleaf.context.Context;
 
 import com.github.larybino.leilao.exception.NotFoundException;
 import com.github.larybino.leilao.model.Person;
+import com.github.larybino.leilao.model.dto.PersonDTO;
 import com.github.larybino.leilao.repository.PersonRepository;
 
 @Service
@@ -35,9 +36,12 @@ public class PersonService implements UserDetailsService{
     @Lazy
     private PasswordEncoder passwordEncoder;
 
-    public Person create(Person person) {
+    public Person create(PersonDTO personDTO) {
+        Person person = new Person();
+        person.setName(personDTO.getName());
+        person.setEmail(personDTO.getEmail());
+        person.setPassword(passwordEncoder.encode(personDTO.getPassword()));
         Person registerPerson = personRepository.save(person);
-        //emailService.sendEmail(registerPerson.getEmail(), "Cadastro com Sucesso!", "Olá " + registerPerson.getName() + ",\n\nSeu cadastro foi realizado com sucesso no sistema de leilão.\n\nAtenciosamente,\nEquipe de Leilão");
         sendEmailSuccess(registerPerson);
         return registerPerson;
     }

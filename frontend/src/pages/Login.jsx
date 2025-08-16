@@ -28,7 +28,7 @@ function Login() {
       console.log("Response:", respons);
       if (respons.status === 200 && respons.data.token) {
         localStorage.setItem("usuario", JSON.stringify(respons.data));
-        navigate("/");
+        navigate("/home");
       } else {
         alert("Login failed. Please check your credentials.");
       }

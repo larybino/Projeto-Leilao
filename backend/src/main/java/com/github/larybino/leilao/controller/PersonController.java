@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.larybino.leilao.exception.NotFoundException;
 import com.github.larybino.leilao.model.Person;
 import com.github.larybino.leilao.model.dto.ChangePasswordRequest;
+import com.github.larybino.leilao.model.dto.PersonDTO;
 import com.github.larybino.leilao.model.dto.RecoverPasswordRequest;
 import com.github.larybino.leilao.model.dto.ResetPasswordRequest;
 import com.github.larybino.leilao.service.PersonService;
@@ -42,7 +43,7 @@ public class PersonController {
     }
 
     @PostMapping
-    public ResponseEntity<Person> create(@Valid @RequestBody Person person) {
+    public ResponseEntity<Person> create(@Valid @RequestBody PersonDTO person) {
         Person createdPerson = personService.create(person);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdPerson);
     }

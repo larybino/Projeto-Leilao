@@ -1,6 +1,7 @@
 .login-page,
 .register-page,
-.forgot-password-page {
+.forgot-password-page ,
+.reset-password-page{
     max-width: 400px;
     margin: auto;
     padding: 1.5rem;
@@ -22,17 +23,11 @@
     text-align: center;
   }
   
-  .login-page h2,
-  .register-page h2,
-  .change-password-page h2,
-  .forgot-password-page h2 {
+  h2{
     margin-bottom: 1rem;
   }
   
-  .login-page input, 
-  .register-page input,
-  .change-password-page input,
-  .forgot-password-page input {
+  input{
     margin: 1rem;
     width: 80%;
     padding: 0.6rem;
@@ -40,10 +35,7 @@
     border: 1px solid #8500cc;
   }
   
-  .login-page button, 
-  .register-page button,
-  .change-password-page button,
-  .forgot-password-page button {
+  button {
     padding: 0.6rem 1.2rem;
     margin-right: 0.5rem;
     border: none;

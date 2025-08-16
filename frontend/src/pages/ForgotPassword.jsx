@@ -1,19 +1,29 @@
 import { useState } from "react";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./styles.css";
+import personService from "../service/PersonService";
+import { toast } from "react-toastify";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!email) {
-      alert("Informe o e-mail.");
-      return;
+    setLoading(true);
+    try {
+      await personService.recoverPassword({ email });
+      toast.success(
+        "Se o e-mail estiver registado, receberá um código de recuperação."
+      );
+      navigate("/reset-password");
+    } catch (error) {
+      console.error("Erro ao recuperar senha:", error);
+      toast.error("Ocorreu um erro. Por favor, tente novamente.");
+    } finally {
+      setLoading(false);
     }
-    navigate("/change-password");
   };
 
   return (
@@ -27,14 +37,12 @@ function ForgotPassword() {
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-          <button type="submit">Recuperar</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "A enviar..." : "Enviar E-mail de Recuperação"}
+        </button>
       </form>
       <p>
-        <span
-          onClick={() => navigate("/")}
-        >
-          Voltar para Login
-        </span>
+        <span onClick={() => navigate("/login")}>Voltar para Login</span>
       </p>
     </div>
   );

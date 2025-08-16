@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
+import PersonService from "../service/PersonService";
+import { toast } from 'react-toastify';
 
 function Register(){
     const [form, setForm] = useState({ name: "", email: "" });
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
   
     const handleChange = (e) => {
@@ -11,10 +14,20 @@ function Register(){
       setForm({ ...form, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form submitted:", form);
-        //navigate('/');
+        setLoading(true);
+        try {
+            await PersonService.create(form);
+            toast.success("Cadastro realizado com sucesso! Agora você pode fazer o login.");
+            navigate('/login'); 
+        } catch (error) {
+            console.error("Erro no cadastro:", error);
+            const errorMessage = error.response?.data?.message || "Falha no cadastro. Verifique seus dados.";
+            toast.error(errorMessage);
+        } finally {
+            setLoading(false);
+        }
       };
 
     return (
@@ -45,12 +58,12 @@ function Register(){
                 onChange={handleChange}
                 required
             />
-            <button type="submit">Cadastrar</button>
+            <button type="submit" disabled={loading}>{loading ? 'Cadastrando...' : 'Cadastrar'}</button>
         </form>
         <p>
         Já possui uma conta?{" "}
         <span
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/login")}
         >
           Login
         </span>
