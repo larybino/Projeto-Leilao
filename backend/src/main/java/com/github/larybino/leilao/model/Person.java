@@ -1,5 +1,6 @@
 package com.github.larybino.leilao.model;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,7 @@ import lombok.Setter;
 @Entity
 @Data
 @Table(name = "person")
-public class Person implements UserDetails{
+public class Person implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,9 +50,11 @@ public class Person implements UserDetails{
     private boolean active;
     @Lob
     private byte[] profilePicture;
+    private String recoveryCode;
+    private LocalDateTime recoveryCodeExpiration;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    @Setter(value= AccessLevel.NONE)
+    @Setter(value = AccessLevel.NONE)
     private List<PersonProfile> personProfile;
 
     public void setPersonProfile(List<PersonProfile> personProfile) {
@@ -65,7 +68,8 @@ public class Person implements UserDetails{
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return personProfile.stream()
-                .map(user -> new SimpleGrantedAuthority(user.getProfile().getType().name())).collect(Collectors.toList());
+                .map(user -> new SimpleGrantedAuthority(user.getProfile().getType().name()))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.larybino.leilao.exception.NotFoundException;
 import com.github.larybino.leilao.model.Person;
+import com.github.larybino.leilao.model.dto.ChangePasswordRequest;
+import com.github.larybino.leilao.model.dto.RecoverPasswordRequest;
+import com.github.larybino.leilao.model.dto.ResetPasswordRequest;
 import com.github.larybino.leilao.service.PersonService;
 
 import jakarta.validation.Valid;
@@ -52,5 +57,39 @@ public class PersonController {
         personService.delete(id);
         return ResponseEntity.ok("Person with ID " + id + " deleted successfully.");
 
+    }
+
+    @PostMapping("/recover-password")
+    public ResponseEntity<String> recoverPassword(@RequestBody RecoverPasswordRequest request) {
+        personService.recoverPassword(request.getEmail());
+        return ResponseEntity.ok("Se o e-mail estiver cadastrado, um código de recuperação foi enviado.");
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        try {
+            personService.resetPassword(request.getCode(), request.getNewPassword());
+            return ResponseEntity.ok("Senha alterada com sucesso.");
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Código inválido.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(
+            @AuthenticationPrincipal Person authenticatedUser,
+            @RequestBody ChangePasswordRequest request) {
+        try {
+            personService.changePassword(
+                authenticatedUser.getEmail(),
+                request.getOldPassword(),
+                request.getNewPassword()
+            );
+            return ResponseEntity.ok("Senha alterada com sucesso.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
 }
