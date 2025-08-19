@@ -82,15 +82,13 @@ public class PersonController {
     public ResponseEntity<String> changePassword(
             @AuthenticationPrincipal Person authenticatedUser,
             @RequestBody ChangePasswordRequest request) {
-        System.out.println("Usuario autenticado: " + authenticatedUser);
+        String email = authenticatedUser.getEmail();
         try {
-            personService.changePassword(
-                    authenticatedUser.getEmail(),
-                    request.getOldPassword(),
-                    request.getNewPassword());
+            personService.changePassword(email, request.getOldPassword(), request.getNewPassword());
             return ResponseEntity.ok("Senha alterada com sucesso.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
 }
