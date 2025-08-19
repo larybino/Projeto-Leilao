@@ -52,23 +52,22 @@ function PersonEdit() {
     if (loading && isEditing) return <p>Carregando dados da pessoa...</p>;
 
     return (
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6">{isEditing ? 'Editar Pessoa' : 'Adicionar Nova Pessoa'}</h1>
+        <div className="person-edit">
+            <h1>{isEditing ? 'Editar Pessoa' : 'Adicionar Nova Pessoa'}</h1>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Nome</label>
-                    <input type="text" name="name" value={form.name} onChange={handleChange} required className="w-full mt-1 p-2 border rounded-md" />
+                    <label>Nome</label>
+                    <input type="text" name="name" value={form.name} onChange={handleChange} required />
                 </div>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Email</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} required className="w-full mt-1 p-2 border rounded-md" />
+                    <label>Email</label>
+                    <input type="email" name="email" value={form.email} onChange={handleChange} required/>
                 </div>
-                 {/* O campo senha só deve aparecer na criação, que já é feita na tela de Register */}
-                <div className="flex justify-end gap-4">
-                    <button type="button" onClick={() => navigate('/pessoas')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
+                <div className="form-button">
+                    <button type="button" onClick={() => navigate('/pessoas')}>
                         Cancelar
                     </button>
-                    <button type="submit" disabled={loading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg disabled:bg-blue-300">
+                    <button type="submit" disabled={loading}>
                         {loading ? 'Salvando...' : 'Salvar'}
                     </button>
                 </div>

@@ -3,8 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import ProfileService from '../service/ProfileService';
 import { toast } from 'react-toastify';
 
-const PROFILE_TYPES = ['ADMIN', 'BUYER', 'SELLER']; 
-
 function ProfileFormPage() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -55,30 +53,18 @@ function ProfileFormPage() {
     if (loading && isEditing) return <p>A carregar dados do perfil...</p>;
 
     return (
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-md">
-            <h1 className="text-2xl font-bold mb-6">{isEditing ? 'Editar Perfil' : 'Adicionar Novo Perfil'}</h1>
+        <div className="person-edit">
+            <h1>{isEditing ? 'Editar Perfil' : 'Adicionar Novo Perfil'}</h1>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                    <label className="block text-sm font-medium text-gray-700">Tipo de Perfil</label>
-                    <select 
-                        value={type} 
-                        onChange={(e) => setType(e.target.value)} 
-                        required 
-                        className="w-full mt-1 p-2 border rounded-md"
-                    >
-                        <option value="">Selecione um tipo</option>
-                        {PROFILE_TYPES.map(profileType => (
-                            <option key={profileType} value={profileType}>
-                                {profileType}
-                            </option>
-                        ))}
-                    </select>
+                    <label>Perfil</label>
+                    <input type="text" name="name" />
                 </div>
                 <div className="flex justify-end gap-4">
-                    <button type="button" onClick={() => navigate('/profile')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg">
+                    <button type="button" onClick={() => navigate('/profile')} >
                         Cancelar
                     </button>
-                    <button type="submit" disabled={loading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg disabled:bg-blue-300">
+                    <button type="submit" disabled={loading}>
                         {loading ? 'A guardar...' : 'Guardar'}
                     </button>
                 </div>
