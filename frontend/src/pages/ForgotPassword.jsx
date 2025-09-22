@@ -38,7 +38,7 @@ function ForgotPassword() {
           required
         />
         <button type="submit" disabled={loading}>
-          {loading ? "A enviar..." : "Enviar E-mail de Recuperação"}
+          {loading ? "Enviando" : "Enviar E-mail de Recuperação"}
         </button>
       </form>
       <p>

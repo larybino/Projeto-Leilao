@@ -65,7 +65,7 @@ function ResetPassword() {
             type="submit" 
             disabled={loading}
           >
-            {loading ? 'A alterar...' : 'Alterar Senha'}
+            {loading ? 'Alterando' : 'Alterar Senha'}
           </button>
         </form>
         <p>

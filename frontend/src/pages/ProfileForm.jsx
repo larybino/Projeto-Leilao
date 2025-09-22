@@ -65,7 +65,7 @@ function ProfileFormPage() {
                         Cancelar
                     </button>
                     <button type="submit" disabled={loading}>
-                        {loading ? 'A guardar...' : 'Guardar'}
+                        {loading ? 'Guardando' : 'Guardar'}
                     </button>
                 </div>
             </form>

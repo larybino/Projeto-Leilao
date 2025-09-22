@@ -64,7 +64,7 @@ function Register() {
                     ))}
                 </select>
 
-                <button type="submit" disabled={loading}>{loading ? 'Cadastrando...' : 'Cadastrar'}</button>
+                <button type="submit" disabled={loading}>{loading ? 'Cadastrando' : 'Cadastrar'}</button>
             </form>
             <p className="login-link">
                 Já possui conta? <span onClick={() => navigate("/login")}>Login</span>
