@@ -1,77 +1,133 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import personService from '../service/PersonService';
+import { InputText } from 'primereact/inputtext';
+import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
+import { Card } from 'primereact/card';
+import { ProgressSpinner } from 'primereact/progressspinner';
 
 function PersonEdit() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const toast = useRef(null);
     const isEditing = Boolean(id);
-    
-    const [form, setForm] = React.useState({ name: '', email: '' });
-    const [loading, setLoading] = React.useState(false);
 
-    React.useEffect(() => {
+    const [form, setForm] = useState({ name: '', email: '' });
+    const [loading, setLoading] = useState(false); 
+    const [pageLoading, setPageLoading] = useState(isEditing); 
+
+    useEffect(() => {
         if (isEditing) {
-            setLoading(true);
             personService.getById(id)
                 .then(response => {
                     setForm({ name: response.data.name, email: response.data.email });
                 })
                 .catch(() => {
-                    toast.error("Pessoa não encontrada.");
+                    toast.current.show({
+                        severity: 'error', summary: 'Erro', detail: 'Pessoa não encontrada.', life: 3000
+                    });
                     navigate('/pessoas');
                 })
-                .finally(() => setLoading(false));
+                .finally(() => setPageLoading(false));
         }
     }, [id, isEditing, navigate]);
 
     const handleChange = (e) => {
-        setForm({ ...form, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setForm(prevState => ({ ...prevState, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        
-        const action = isEditing 
-            ? personService.update({ ...form, id }) 
-            : personService.create(form);
+
+        const personData = isEditing ? { ...form, id: parseInt(id) } : form;
+        const action = isEditing
+            ? personService.update(personData)
+            : personService.create(personData);
 
         try {
             await action;
-            toast.success(`Pessoa ${isEditing ? 'atualizada' : 'criada'} com sucesso!`);
+            toast.current.show({
+                severity: 'success',
+                summary: 'Sucesso',
+                detail: `Pessoa ${isEditing ? 'atualizada' : 'criada'} com sucesso!`,
+                life: 3000
+            });
             navigate('/pessoas');
         } catch (error) {
-            toast.error(error.response?.data?.message || "Ocorreu um erro.");
+            const errorMessage = error.response?.data?.message || 'Ocorreu um erro ao salvar os dados.';
+            toast.current.show({
+                severity: 'error', summary: 'Erro', detail: errorMessage, life: 3000
+            });
         } finally {
             setLoading(false);
         }
     };
 
-    if (loading && isEditing) return <p>Carregando dados da pessoa...</p>;
+    const formFooter = (
+        <div className="flex justify-content-end gap-2">
+            <Button
+                label="Cancelar"
+                icon="pi pi-times"
+                severity="secondary"
+                outlined
+                onClick={() => navigate('/pessoas')}
+                disabled={loading}
+            />
+            <Button
+                type="submit"
+                label={isEditing ? 'Salvar' : 'Criar'}
+                icon="pi pi-check"
+                loading={loading} // Indicador de loading no próprio botão
+            />
+        </div>
+    );
+
+    const formContent = (
+        <form onSubmit={handleSubmit} className="p-fluid">
+            <div className="field">
+                <label htmlFor="name">Nome</label>
+                <InputText
+                    id="name"
+                    name="name"
+                    value={form.name}
+                    onChange={handleChange}
+                    required
+                    autoFocus
+                />
+            </div>
+            <div className="field">
+                <label htmlFor="email">Email</label>
+                <InputText
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={form.email}
+                    onChange={handleChange}
+                    required
+                />
+            </div>
+        </form>
+    );
 
     return (
-        <div className="person-edit">
-            <h1>{isEditing ? 'Editar Pessoa' : 'Adicionar Nova Pessoa'}</h1>
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                    <label>Nome</label>
-                    <input type="text" name="name" value={form.name} onChange={handleChange} required />
-                </div>
-                <div>
-                    <label>Email</label>
-                    <input type="email" name="email" value={form.email} onChange={handleChange} required/>
-                </div>
-                <div className="form-button">
-                    <button type="button" onClick={() => navigate('/pessoas')}>
-                        Cancelar
-                    </button>
-                    <button type="submit" disabled={loading}>
-                        {loading ? 'Salvando...' : 'Salvar'}
-                    </button>
-                </div>
-            </form>
+        <div className="p-d-flex p-jc-center p-ai-center">
+            <Toast ref={toast} />
+            <Card
+                title={isEditing ? 'Editar Pessoa' : 'Adicionar Nova Pessoa'}
+                footer={!pageLoading && formFooter}
+                style={{ width: '100%', maxWidth: '600px' }}
+            >
+                {pageLoading ? (
+                    <div className="flex justify-content-center p-5">
+                        <ProgressSpinner />
+                    </div>
+                ) : (
+                    formContent
+                )}
+            </Card>
         </div>
     );
 }

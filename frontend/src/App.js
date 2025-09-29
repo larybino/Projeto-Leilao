@@ -27,7 +27,6 @@ function App() {
             <Route path="/home" element={<LayoutBasic><Home /></LayoutBasic>} />
             <Route path="/profile" element={<LayoutBasic><ProfileListPage /></LayoutBasic>} />
             <Route path="/profile/novo" element={<LayoutBasic><ProfileFormPage /></LayoutBasic>} />
-            <Route path="/profile/:id" element={<LayoutBasic><ProfileFormPage /></LayoutBasic>} />
             <Route path="/pessoas" element={<LayoutBasic><PersonListPage /></LayoutBasic>} />
             <Route path="/pessoas/:id" element={<LayoutBasic><PersonEdit /></LayoutBasic>} />
             <Route path= "/categoria"  element={<LayoutBasic><Category /></LayoutBasic>} />
