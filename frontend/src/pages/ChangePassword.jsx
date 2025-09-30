@@ -1,113 +1,134 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles.css";
-import { toast } from "react-toastify";
 import personService from "../service/PersonService";
-
-const passwordRules = [
-    { regex: /.{6,}/, message: "Mínimo de 6 caracteres" },
-];
+import { Card } from 'primereact/card';
+import { Button } from 'primereact/button';
+import { Toast } from 'primereact/toast';
+import { Password } from 'primereact/password';
+import { Divider } from 'primereact/divider';
 
 function ChangePassword() {
-  const [form, setForm] = useState({
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+    const [form, setForm] = useState({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    });
+    const [loading, setLoading] = useState(false);
+    const toast = useRef(null);
+    const navigate = useNavigate();
 
-  const isPasswordValid = (password) => {
-        return passwordRules.every(rule => rule.regex.test(password));
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setForm({ ...form, [name]: value });
     };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if (form.newPassword !== form.confirmPassword) {
+            toast.current.show({
+                severity: 'warn', summary: 'Atenção', detail: 'A nova senha e a confirmação não coincidem.', life: 3000
+            });
+            return;
+        }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (form.newPassword !== form.confirmPassword) {
-      toast.error("A nova senha e a confirmação não coincidem.");
-      return;
-    }
+        setLoading(true);
+        try {
+            await personService.changePassword({
+                oldPassword: form.oldPassword,
+                newPassword: form.newPassword,
+            });
+            toast.current.show({
+                severity: 'success', summary: 'Sucesso', detail: 'Senha alterada! Por favor, faça o login novamente.', life: 3000
+            });
+            setTimeout(() => navigate("/login"), 2500);
+        } catch (error) {
+            const errorMessage = error.response?.data?.message || "Não foi possível alterar a senha. Verifique sua senha antiga.";
+            toast.current.show({
+                severity: 'error', summary: 'Erro', detail: errorMessage, life: 3000
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    if (!isPasswordValid(form.newPassword)) {
-      toast.error("A nova senha não atende a todos os critérios de segurança.");
-      return;
-    }
+    const passwordFooter = (
+        <>
+            <Divider />
+            <p className="mt-2">Sugestões de segurança:</p>
+            <ul className="pl-2 ml-2 mt-0 line-height-3">
+                <li>Pelo menos uma letra minúscula</li>
+                <li>Pelo menos uma letra maiúscula</li>
+                <li>Pelo menos um número</li>
+                <li>Mínimo de 8 caracteres</li>
+            </ul>
+        </>
+    );
 
-    setLoading(true);
-    try {
-      console.log("Token atual:", JSON.parse(localStorage.getItem('usuario')));
+    return (
+        <div className="change-password-page flex align-items-center justify-content-center">
+            <Toast ref={toast} />
+            <Card title="Alterar Senha" style={{ width: '100%', maxWidth: '450px' }}>
+                <form onSubmit={handleSubmit} className="p-fluid flex flex-column gap-4">
+                    <span className="p-float-label">
+                        <Password
+                            inputId="oldPassword"
+                            name="oldPassword"
+                            value={form.oldPassword}
+                            onChange={handleChange}
+                            toggleMask
+                            required
+                            feedback={false}
+                        />
+                        <label htmlFor="oldPassword">Senha Antiga</label>
+                    </span>
 
-      await personService.changePassword({
-        oldPassword: form.oldPassword,
-        newPassword: form.newPassword,
-      });
-      toast.success(
-        "Senha alterada com sucesso! Por favor, faça o login novamente."
-      );
-      navigate("/login");
-    } catch (error) {
-      console.error("Erro ao alterar senha:", error);
-      const errorMessage =
-        error.response?.data?.message || "Não foi possível alterar a senha.";
-      toast.error(errorMessage);
-    } finally {
-      setLoading(false);
-    }
-  };
+                    <Password
+                        inputId="newPassword"
+                        name="newPassword"
+                        value={form.newPassword}
+                        onChange={handleChange}
+                        toggleMask
+                        required
+                        header="Crie uma nova senha"
+                        footer={passwordFooter}
+                        promptLabel="Digite a nova senha"
+                        weakLabel="Fraca"
+                        mediumLabel="Média"
+                        strongLabel="Forte"
+                    />
 
-  return (
-    <div className="change-password-page">
-      <h2>Alterar Senha</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          name="oldPassword"
-          value={form.oldPassword}
-          onChange={handleChange}
-          placeholder="Senha Antiga"
-          required
-        />
-        <input
-          type="password"
-          name="newPassword"
-          value={form.newPassword}
-          onChange={handleChange}
-          placeholder="Nova Senha"
-          required
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          value={form.confirmPassword}
-          onChange={handleChange}
-          placeholder="Confirmar Senha"
-          required
-        />
+                    <span className="p-float-label">
+                        <Password
+                            inputId="confirmPassword"
+                            name="confirmPassword"
+                            value={form.confirmPassword}
+                            onChange={handleChange}
+                            toggleMask
+                            required
+                            feedback={false}
+                        />
+                         <label htmlFor="confirmPassword">Confirmar Nova Senha</label>
+                    </span>
 
-        <ul className="validation-list">
-          {passwordRules.map((rule) => (
-            <li
-              key={rule.message}
-              className={rule.regex.test(form.password) ? "valid" : "invalid"}
-            >
-              {rule.regex.test(form.newPassword) ? "✓" : "✗"} {rule.message}
-            </li>
-          ))}
-        </ul>
-        <button type="submit" disabled={loading}>
-          {loading ? "Alterando..." : "Alterar Senha"}
-        </button>
-        <button type="button" onClick={() => navigate("/home")}>
-          Cancelar
-        </button>
-      </form>
-    </div>
-  );
+                    <div className="flex justify-content-end gap-2 mt-3">
+                         <Button
+                            type="button"
+                            label="Cancelar"
+                            severity="secondary"
+                            outlined
+                            onClick={() => navigate("/home")}
+                            disabled={loading}
+                        />
+                        <Button
+                            type="submit"
+                            label="Alterar Senha"
+                            loading={loading}
+                        />
+                    </div>
+                </form>
+            </Card>
+        </div>
+    );
 }
 
 export default ChangePassword;

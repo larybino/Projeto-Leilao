@@ -1,76 +1,117 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import "./styles.css";
 import AuthService from "../service/AuthService";
-
+import { Card } from "primereact/card";
+import { InputText } from "primereact/inputtext";
+import { Button } from "primereact/button";
+import { Password } from "primereact/password";
+import { Toast } from "primereact/toast";
+import { Divider } from "primereact/divider";
+import "./styles.css";
 function Login() {
-  const authService = new AuthService();
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
+  const toast = useRef(null);
   const navigate = useNavigate();
+  const authService = new AuthService();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: value,
-    });
+    setForm((prevForm) => ({ ...prevForm, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", form);
-    //navigate('/');
-     try {
-      const respons = await authService.login(form);
-      console.log("Response:", respons);
-      if (respons.status === 200 && respons.data.token) {
-        localStorage.setItem("usuario", JSON.stringify(respons.data));
-        navigate("/home");
-      } else {
-        alert("Login failed. Please check your credentials.");
+    setLoading(true);
+    try {
+      const response = await authService.login(form);
+      if (response.status === 200 && response.data.token) {
+        localStorage.setItem("usuario", JSON.stringify(response.data));
+        toast.current.show({
+          severity: "success",
+          summary: "Sucesso",
+          detail: "Login efetuado! Redirecionando...",
+          life: 2000,
+        });
+        setTimeout(() => navigate("/home"), 1500);
       }
     } catch (error) {
-      console.log("Login error:", error);
-      alert(error.response.data.message);
+      const errorMessage =
+        error.response?.data?.message ||
+        "Login falhou. Verifique suas credenciais.";
+      toast.current.show({
+        severity: "error",
+        summary: "Erro de Autenticação",
+        detail: errorMessage,
+        life: 3000,
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
+  const cardFooter = (
+    <div>
+      <Divider />
+      <div>
+        <Button
+          label="Não possui uma conta? Cadastre-se"
+          link
+          onClick={() => navigate("/register")}
+        />
+        <Button
+          label="Esqueceu a senha?"
+          link
+          onClick={() => navigate("/forgot-password")}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <div className="login-page">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">
-          Login
-        </button>
-      </form>
-      <p>
-        Não possui uma conta?{" "}
-        <span onClick={() => navigate("/register")}>Register</span>
-      </p>
-      <p>
-        <span onClick={() => navigate("/forgot-password")}>
-          Esqueceu a senha?
-        </span>
-      </p>
+      <Toast ref={toast} />
+      <Card
+        title="Login"
+        style={{ width: "100%", maxWidth: "400px" }}
+        footer={cardFooter}
+      >
+        <form onSubmit={handleSubmit}>
+          <span className="p-float-label">
+            <InputText
+              className="input"
+              id="email"
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              autoFocus
+            />
+            <label htmlFor="email">Email</label>
+          </span>
+
+          <span className="p-float-label">
+            <Password
+              className="input-password"
+              inputId="password"
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              toggleMask
+              required
+              feedback={false}
+            />
+            <label htmlFor="password">Senha</label>
+          </span>
+
+          <Button
+            label="Entrar"
+            className="btn"
+            type="submit"
+            loading={loading}
+          />
+        </form>
+      </Card>
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import categoryService from '../service/CategoryService'; // Assumindo que você terá este serviço
+import categoryService from '../service/CategoryService'; 
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -65,7 +65,6 @@ function CategoryListPage() {
         });
     };
 
-    // Template para a coluna de ações (botões)
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
@@ -89,7 +88,6 @@ function CategoryListPage() {
         );
     };
 
-    // Templates para a Toolbar
     const leftToolbarTemplate = () => (
         <h1 style={{ margin: 0 }}>Gerenciar Categorias</h1>
     );
