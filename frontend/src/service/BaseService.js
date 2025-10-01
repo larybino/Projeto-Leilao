@@ -11,8 +11,8 @@ async create(data){
     return response;
 }
 
-async update(data){
-    const response = await this.api.put(this.endPoint, data);
+async update(id, data){
+    const response = await this.api.put(`${this.endPoint}/${id}`, data);
     return response;
 }
 

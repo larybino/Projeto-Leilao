@@ -16,7 +16,8 @@ import PersonListPage from "./pages/PersonListPage";
 import PersonEdit from "./pages/PersonEdit";
 import ProfileListPage from "./pages/ProfileList";
 import ProfileFormPage from "./pages/ProfileForm";
-import Category from "./pages/Category";
+import CategoryListPage from "./pages/CategoryListPage";
+import CategoryForm from "./pages/CategoryForm";
 
 function App() {
   return (
@@ -29,7 +30,9 @@ function App() {
             <Route path="/profile/novo" element={<LayoutBasic><ProfileFormPage /></LayoutBasic>} />
             <Route path="/pessoas" element={<LayoutBasic><PersonListPage /></LayoutBasic>} />
             <Route path="/pessoas/:id" element={<LayoutBasic><PersonEdit /></LayoutBasic>} />
-            <Route path= "/categoria"  element={<LayoutBasic><Category /></LayoutBasic>} />
+            <Route path= "/categorias"  element={<LayoutBasic><CategoryListPage /></LayoutBasic>} />
+            <Route path= "/categorias/novo"  element={<LayoutBasic><CategoryForm /></LayoutBasic>} />
+            <Route path= "/categorias/:id"  element={<LayoutBasic><CategoryForm /></LayoutBasic>} />
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

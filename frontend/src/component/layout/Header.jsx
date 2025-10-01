@@ -24,6 +24,7 @@ function Header() {
           <div className="menu">
             <NavLink to="/pessoas">Pessoas</NavLink>
             <NavLink to="/profile">Perfis</NavLink>
+            <NavLink to="/categorias">Categorias</NavLink>
             <button onClick={handleLogout}>Logout</button>
           </div>
         )}

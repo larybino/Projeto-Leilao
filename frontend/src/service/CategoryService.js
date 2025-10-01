@@ -2,7 +2,7 @@ import BaseService from "./BaseService";
 
 class CategoryService extends BaseService {
   constructor() {
-    super("/category");
+    super("/categories");
   }
 }
 const categoryService = new CategoryService();
