@@ -18,6 +18,8 @@ import ProfileListPage from "./pages/ProfileList";
 import ProfileFormPage from "./pages/ProfileForm";
 import CategoryListPage from "./pages/CategoryListPage";
 import CategoryForm from "./pages/CategoryForm";
+import AuctionListPage from "./pages/AuctionListPage";
+import AuctionForm from "./pages/AuctionForm";
 
 function App() {
   return (
@@ -33,6 +35,9 @@ function App() {
             <Route path= "/categorias"  element={<LayoutBasic><CategoryListPage /></LayoutBasic>} />
             <Route path= "/categorias/novo"  element={<LayoutBasic><CategoryForm /></LayoutBasic>} />
             <Route path= "/categorias/:id"  element={<LayoutBasic><CategoryForm /></LayoutBasic>} />
+            <Route path= "/leiloes"  element={<LayoutBasic><AuctionListPage /></LayoutBasic>} />
+            <Route path= "/leiloes/novo"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
+            <Route path= "/leiloes/:id"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

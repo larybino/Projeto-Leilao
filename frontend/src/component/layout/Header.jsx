@@ -25,6 +25,7 @@ function Header() {
             <NavLink to="/pessoas">Pessoas</NavLink>
             <NavLink to="/profile">Perfis</NavLink>
             <NavLink to="/categorias">Categorias</NavLink>
+            <NavLink to="/leiloes">Leilões</NavLink>
             <button onClick={handleLogout}>Logout</button>
           </div>
         )}
