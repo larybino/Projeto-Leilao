@@ -10,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 
 import com.github.larybino.leilao.model.Person;
 
-
 public interface PersonRepository extends JpaRepository<Person, Long> {
     @Query("from Person p where p.email = :email")
     public Page<Person> findByEmail(@Param("email") String email, Pageable pageable);
@@ -18,5 +17,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
     public Optional<Person> findByEmail(String email);
 
     public Optional<Person> findByRecoveryCode(String code);
+
+    public Page<Person> findByNameOrEmail(String name, String email, Pageable pageable);
 
 }

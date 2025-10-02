@@ -46,11 +46,7 @@ public class SecurityConfig {
              .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(authorize -> authorize
             .requestMatchers("/auth/**").permitAll()
-            .requestMatchers("/person/**").permitAll()
-            .requestMatchers("/profile/**").permitAll()
-            .requestMatchers("/category/**").permitAll()
             .requestMatchers("/auction/public").permitAll()
-            /* .requestMatchers("/api/pessoa/**").hasRole("ADMIN") */
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session

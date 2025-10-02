@@ -49,7 +49,7 @@ public class PersonService implements UserDetailsService {
         person.setPassword(passwordEncoder.encode(personDTO.getPassword()));
         if (personDTO.getProfileIds() != null && !personDTO.getProfileIds().isEmpty()) {
             List<Profile> profiles = profileRepository.findAllById(personDTO.getProfileIds());
-            
+
             List<PersonProfile> personProfiles = profiles.stream().map(profile -> {
                 PersonProfile personProfile = new PersonProfile();
                 personProfile.setProfile(profile);
@@ -83,9 +83,8 @@ public class PersonService implements UserDetailsService {
                 "recoverPassword");
     }
 
-    public Person update(Person person) {
-        // return personRepository.save(person);
-        Person existingPerson = findById(person.getId());
+    public Person update(Long id, Person person) {
+        Person existingPerson = findById(id);
         existingPerson.setName(person.getName());
         existingPerson.setEmail(person.getEmail());
         return personRepository.save(existingPerson);
@@ -104,8 +103,12 @@ public class PersonService implements UserDetailsService {
                         LocaleContextHolder.getLocale())));
     }
 
-    public Page<Person> findAll(Pageable pageable) {
-        return personRepository.findAll(pageable);
+    public Page<Person> findAll(String searchTerm, Pageable pageable) {
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            return personRepository.findByNameOrEmail(searchTerm, searchTerm, pageable);
+        } else {
+            return personRepository.findAll(pageable);
+        }
     }
 
     public void recoverPassword(String email) {

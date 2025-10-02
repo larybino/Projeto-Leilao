@@ -32,6 +32,15 @@ class PersonService extends BaseService {
     );
     return response;
   }
+
+  async getAll(searchTerm = "") {
+    let url = this.endPoint;
+    if (searchTerm) {
+      url += `?search=${encodeURIComponent(searchTerm)}`;
+    }
+    const response = await this.api.get(url);
+    return response;
+  }
 }
 const personService = new PersonService();
 export default personService;

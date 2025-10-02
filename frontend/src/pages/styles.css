@@ -56,6 +56,10 @@ h2 {
   font-size: 1rem;
 }
 
+.p-input-icon-left .p-inputtext {
+  padding-left: 1.5rem; 
+}
+
 .p-password {
   width: 100% !important;
   min-width: 100% !important;

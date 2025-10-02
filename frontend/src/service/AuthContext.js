@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import api from '../config/axiosConfig';
 import AuthService from './AuthService';
 
@@ -14,15 +15,17 @@ export const AuthProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const login = async (credentials) => {
-        try {
-            const response = await authService.login(credentials);
-            if (response.status === 200 && response.data.token) {
-                const userData = response.data;
-                localStorage.setItem("usuario", JSON.stringify(userData));
-                setUser(userData);
-                navigate("/"); 
-                return { success: true };
-            }
+    try {
+        const response = await authService.login(credentials);
+        if (response.status === 200 && response.data.token) {
+            const userData = response.data;
+            const decodedToken = jwtDecode(userData.token);
+            userData.roles = decodedToken.authorities || [];
+            localStorage.setItem("usuario", JSON.stringify(userData));
+            setUser(userData);
+            navigate("/"); 
+            return { success: true };
+        }
         } catch (error) {
             console.error("Login error:", error);
             return { success: false, message: error.response?.data?.message || "Login falhou." };
