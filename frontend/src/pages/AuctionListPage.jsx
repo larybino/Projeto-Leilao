@@ -110,12 +110,12 @@ function AuctionListPage() {
   };
 
   const actionBodyTemplate = (rowData) => {
-    const isOwner = user?.id === rowData.seller?.id;
-    const isAdmin = user?.roles?.includes('ADMIN');
+    // const isOwner = user?.id === rowData.seller?.id;
+    // const isAdmin = user?.roles?.includes('ADMIN');
 
-    if (!isOwner && !isAdmin) {
-        return null; 
-    }
+    // if (!isOwner && !isAdmin) {
+    //     return null; 
+    // }
 
     return (
       <React.Fragment>

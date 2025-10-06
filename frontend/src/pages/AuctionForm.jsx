@@ -9,6 +9,8 @@ import auctionService from "../service/AuctionService";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import categoryService from "../service/CategoryService";
+import { TabPanel, TabView } from "primereact/tabview";
+import ImgForm from "./ImgForm";
 
 const statusOptions = [
   { label: "Aberto", value: "OPEN" },
@@ -282,25 +284,28 @@ function AuctionForm() {
   );
 
   return (
-    <div>
-      <Toast ref={toast} />
-      <Dialog
-        header={isEditing ? "Editar Leilão" : "Adicionar Novo Leilão"}
-        visible={visible}
-        style={{ width: "400px" }}
-        footer={renderFooter()}
-        onHide={closeModal}
-      >
-        {pageLoading ? (
-          <div className="flex justify-content-center p-5">
-            <ProgressSpinner />
-          </div>
-        ) : (
-          formContent
-        )}
-      </Dialog>
-    </div>
-  );
+        <div>
+            <Toast ref={toast} />
+            <Dialog header={isEditing ? "Editar Leilão" : "Adicionar Novo Leilão"} visible={visible} style={{ width: "50vw" }} footer={renderFooter()} onHide={closeModal}>
+                {pageLoading ? (
+                    <div className="flex justify-content-center p-5">
+                        <ProgressSpinner />
+                    </div>
+                ) : (
+                    <TabView>
+                        <TabPanel header="Dados do Leilão">
+                            {formContent}
+                        </TabPanel>
+                        {isEditing && (
+                            <TabPanel header="Imagens">
+                                <ImgForm auctionId={id} />
+                            </TabPanel>
+                        )}
+                    </TabView>
+                )}
+            </Dialog>
+        </div>
+    );
 }
 
 export default AuctionForm;

@@ -50,7 +50,7 @@ public class AuctionController {
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAuthority('SELLER') or hasAuthority('ADMIN')")
     public ResponseEntity<Auction> create(@Valid @RequestBody Auction auction,
             @AuthenticationPrincipal Person authenticatedUser) {
         return ResponseEntity.ok(auctionService.create(auction, authenticatedUser));

@@ -318,7 +318,83 @@ span {
 }
 
 .toolbar-right-content {
-  display: flex;          /* Ativa o layout flexível (mesmo que a classe 'flex') */
-  align-items: center;    /* Alinha os itens verticalmente (mesmo que 'items-center') */
-  gap: 1rem;              /* Cria um espaço entre os itens (mesmo que 'gap-4') */
+  display: flex;          
+  align-items: center;    
+  gap: 1rem;             
+}
+
+.image-manager-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #000000;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.p-galleria .p-galleria-item-wrapper .p-galleria-item {
+  background-color: #f4f4f4; 
+}
+
+.image-gallery-item {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 450px; 
+}
+
+.gallery-main-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.delete-image-button.p-button {
+  position: absolute;
+  top: 1rem;
+  left: 15rem;
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  color: white !important;
+  border: none !important;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.delete-image-button.p-button:hover {
+  background-color: rgba(220, 53, 69, 0.9) !important;
+}
+
+.p-galleria-caption {
+  display: none !important;
+}
+
+.gallery-thumbnail-image {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  background-color: #e9ecef;
+  border: 2px solid transparent; 
+  transition: border-color 0.2s;
+}
+
+.p-galleria-thumbnail-item-current .gallery-thumbnail-image {
+  border-color: #a100ff; 
+}
+
+
+.p-fileupload-buttonbar .p-button {
+  background: #8500cc;
+  border-color: #8500cc;
+  color: #ffffff; 
+}
+
+.p-fileupload-buttonbar .p-button .p-button-label {
+  color: #ffffff !important; 
+}
+
+.p-fileupload-buttonbar .p-button:hover {
+  background: #a100ff;
+  border-color: #a100ff;
 }

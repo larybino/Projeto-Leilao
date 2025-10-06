@@ -20,8 +20,6 @@ import CategoryListPage from "./pages/CategoryListPage";
 import CategoryForm from "./pages/CategoryForm";
 import AuctionListPage from "./pages/AuctionListPage";
 import AuctionForm from "./pages/AuctionForm";
-import ImgListPage from "./pages/ImgListPage";
-import ImgFormPage from "./pages/ImgForm";
 
 function App() {
   return (
@@ -40,9 +38,6 @@ function App() {
             <Route path= "/leiloes"  element={<LayoutBasic><AuctionListPage /></LayoutBasic>} />
             <Route path= "/leiloes/novo"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
             <Route path= "/leiloes/:id"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
-            <Route path= "/imagens"  element={<LayoutBasic><ImgListPage /></LayoutBasic>} />
-            <Route path= "/imagens/novo"  element={<LayoutBasic><ImgFormPage /></LayoutBasic>} />
-            <Route path= "/imagens/:id"  element={<LayoutBasic><ImgFormPage /></LayoutBasic>} />
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

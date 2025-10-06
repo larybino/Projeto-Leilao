@@ -1,24 +1,34 @@
 package com.github.larybino.leilao.model;
 
-import java.util.Date;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "imgs")
 @Data
+@NoArgsConstructor
 public class Img {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTime;
+
+    private String fileName; 
+    private String originalFileName;
+    private String contentType;
     private String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "auction_id", nullable = false)
+    @JsonIgnore 
+    private Auction auction;
+
+    public Img(String fileName, String originalFileName, String contentType, String url, Auction auction) {
+        this.fileName = fileName;
+        this.originalFileName = originalFileName;
+        this.contentType = contentType;
+        this.url = url;
+        this.auction = auction;
+    }
 }
