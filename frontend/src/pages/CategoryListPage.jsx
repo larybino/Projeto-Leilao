@@ -7,17 +7,27 @@ import { Button } from "primereact/button";
 import { Toast } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Toolbar } from "primereact/toolbar";
+import { InputText } from "primereact/inputtext";
 
 function CategoryListPage() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const toast = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const timerId = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => clearTimeout(timerId);
+  }, [searchTerm]);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await categoryService.getAll();
+        const response = await categoryService.getAll(debouncedSearchTerm);
         setCategories(response.data.content || []);
       } catch (error) {
         toast.current.show({
@@ -31,7 +41,7 @@ function CategoryListPage() {
       }
     };
     fetchCategories();
-  }, []);
+  }, [debouncedSearchTerm]);
 
   const handleDelete = async (id) => {
     try {
@@ -92,12 +102,23 @@ function CategoryListPage() {
   );
 
   const rightToolbarTemplate = () => (
-    <Button
-      label="Nova"
-      icon="pi pi-plus"
-      className="btn-add"
-      onClick={() => navigate("/categorias/novo")}
-    />
+    <div className="toolbar-right-content">
+      <span className="p-input-icon-left">
+        <i className="pi pi-search" />
+        <InputText
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Buscar por nome"
+        />
+      </span>
+
+      <Button
+        label="Nova"
+        icon="pi pi-plus"
+        className="btn-add"
+        onClick={() => navigate("/categorias/novo")}
+      />
+    </div>
   );
 
   return (

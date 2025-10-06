@@ -8,10 +8,11 @@ import { ProgressSpinner } from "primereact/progressspinner";
 import auctionService from "../service/AuctionService";
 import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
+import categoryService from "../service/CategoryService";
 
 const statusOptions = [
-  { label: "Ativo", value: "IN_PROGRESS" },
   { label: "Aberto", value: "OPEN" },
+  { label: "Em Andamento", value: "IN_PROGRESS" },
   { label: "Encerrado", value: "CLOSED" },
   { label: "Cancelado", value: "CANCELED" },
 ];
@@ -28,13 +29,34 @@ function AuctionForm() {
   const [detailsDescription, setDetailsDescription] = useState("");
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
-  const [status, setStatus] = useState(null);
+  const [status, setStatus] = useState("OPEN");
   const [obs, setObs] = useState("");
   const [incrementValue, setIncrementValue] = useState("");
   const [minBid, setMinBid] = useState("");
+  const [categoryId, setCategoryId] = useState(null);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(isEditing);
-  const [visible, setVisible] = useState(false); // não abrir antes de carregar
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    categoryService
+      .getAll()
+      .then((response) => {
+        const categoryOptions = response.data.content.map((cat) => ({
+          label: cat.name,
+          value: cat.id,
+        }));
+        setCategories(categoryOptions);
+      })
+      .catch(() => {
+        toast.current.show({
+          severity: "error",
+          summary: "Erro",
+          detail: "Não foi possível carregar as categorias.",
+        });
+      });
+  }, []);
 
   useEffect(() => {
     if (isEditing) {
@@ -51,6 +73,7 @@ function AuctionForm() {
           setObs(data.obs || "");
           setIncrementValue(data.incrementValue || "");
           setMinBid(data.minBid || "");
+          setCategoryId(data.category?.id || null);
         })
         .catch(() => {
           toast.current.show({
@@ -63,21 +86,21 @@ function AuctionForm() {
         })
         .finally(() => {
           setPageLoading(false);
-          setVisible(true); // abrir modal só após carregar dados
+          setVisible(true);
         });
     } else {
-      setVisible(true); // para novo leilão já abre
+      setVisible(true);
     }
   }, [id, isEditing, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim() || !description.trim()) {
+    if (!title.trim() || !description.trim() || !categoryId) {
       toast.current.show({
         severity: "warn",
         summary: "Atenção",
-        detail: "Título e descrição são obrigatórios.",
+        detail: "Título, descrição e categoria são obrigatórios.",
         life: 3000,
       });
       return;
@@ -95,6 +118,7 @@ function AuctionForm() {
       obs,
       incrementValue: parseFloat(incrementValue) || 0,
       minBid: parseFloat(minBid) || 0,
+      category: { id: categoryId },
     };
 
     try {
@@ -156,47 +180,103 @@ function AuctionForm() {
     <div className="p-fluid">
       <div className="field">
         <label htmlFor="title">Título</label>
-        <InputText id="title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <InputText
+          id="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
       </div>
 
       <div className="field">
         <label htmlFor="description">Descrição</label>
-        <InputText id="description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+        <InputText
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
+      </div>
+
+      <div className="field">
+        <label htmlFor="category">Categoria</label>
+        <Dropdown
+          id="category"
+          value={categoryId}
+          options={categories}
+          onChange={(e) => setCategoryId(e.value)}
+          placeholder="Selecione a categoria"
+          required
+        />
       </div>
 
       <div className="field">
         <label htmlFor="detailsDescription">Detalhes</label>
-        <InputText id="detailsDescription" value={detailsDescription} onChange={(e) => setDetailsDescription(e.target.value)} />
+        <InputText
+          id="detailsDescription"
+          value={detailsDescription}
+          onChange={(e) => setDetailsDescription(e.target.value)}
+        />
       </div>
 
       <div className="field">
         <label htmlFor="startDate">Data de Início</label>
-        <Calendar id="startDate" value={startDate} onChange={(e) => setStartDate(e.value)} showTime dateFormat="dd/mm/yy" />
+        <Calendar
+          id="startDate"
+          value={startDate}
+          onChange={(e) => setStartDate(e.value)}
+          showTime
+          dateFormat="dd/mm/yy"
+        />
       </div>
 
       <div className="field">
         <label htmlFor="endDate">Data de Término</label>
-        <Calendar id="endDate" value={endDate} onChange={(e) => setEndDate(e.value)} showTime dateFormat="dd/mm/yy" />
+        <Calendar
+          id="endDate"
+          value={endDate}
+          onChange={(e) => setEndDate(e.value)}
+          showTime
+          dateFormat="dd/mm/yy"
+        />
       </div>
 
       <div className="field">
         <label htmlFor="status">Status</label>
-        <Dropdown id="status" value={status} options={statusOptions} onChange={(e) => setStatus(e.value)} placeholder="Selecione o status" />
+        <Dropdown
+          id="status"
+          value={status}
+          options={statusOptions}
+          onChange={(e) => setStatus(e.value)}
+          placeholder="Selecione o status"
+        />
       </div>
 
       <div className="field">
         <label htmlFor="obs">Observação</label>
-        <InputText id="obs" value={obs} onChange={(e) => setObs(e.target.value)} />
+        <InputText
+          id="obs"
+          value={obs}
+          onChange={(e) => setObs(e.target.value)}
+        />
       </div>
 
       <div className="field">
         <label htmlFor="incrementValue">Valor Incrementado</label>
-        <InputText id="incrementValue" value={incrementValue} onChange={(e) => setIncrementValue(e.target.value)} />
+        <InputText
+          id="incrementValue"
+          value={incrementValue}
+          onChange={(e) => setIncrementValue(e.target.value)}
+        />
       </div>
 
       <div className="field">
         <label htmlFor="minBid">Lance Mínimo</label>
-        <InputText id="minBid" value={minBid} onChange={(e) => setMinBid(e.target.value)} />
+        <InputText
+          id="minBid"
+          value={minBid}
+          onChange={(e) => setMinBid(e.target.value)}
+        />
       </div>
     </div>
   );
@@ -204,7 +284,13 @@ function AuctionForm() {
   return (
     <div>
       <Toast ref={toast} />
-      <Dialog header={isEditing ? "Editar Leilão" : "Adicionar Novo Leilão"} visible={visible} style={{ width: "400px" }} footer={renderFooter()} onHide={closeModal}>
+      <Dialog
+        header={isEditing ? "Editar Leilão" : "Adicionar Novo Leilão"}
+        visible={visible}
+        style={{ width: "400px" }}
+        footer={renderFooter()}
+        onHide={closeModal}
+      >
         {pageLoading ? (
           <div className="flex justify-content-center p-5">
             <ProgressSpinner />

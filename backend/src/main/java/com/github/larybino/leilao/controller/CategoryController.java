@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.larybino.leilao.model.Category;
@@ -50,8 +51,10 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<Category>> findAll(Pageable pageable) {
-        Page<Category> categories = categoryService.findAll(pageable);
+    public ResponseEntity<Page<Category>> findAll(
+            @RequestParam(value = "search", required = false) String searchTerm,
+            Pageable pageable) {
+        Page<Category> categories = categoryService.findAll(searchTerm, pageable);
         return ResponseEntity.ok(categories);
     }
 }

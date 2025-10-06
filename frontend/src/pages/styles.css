@@ -316,3 +316,9 @@ span {
   justify-content: center;
   gap: 4;
 }
+
+.toolbar-right-content {
+  display: flex;          /* Ativa o layout flexível (mesmo que a classe 'flex') */
+  align-items: center;    /* Alinha os itens verticalmente (mesmo que 'items-center') */
+  gap: 1rem;              /* Cria um espaço entre os itens (mesmo que 'gap-4') */
+}

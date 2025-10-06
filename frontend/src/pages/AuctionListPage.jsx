@@ -7,17 +7,51 @@ import { Toast } from "primereact/toast";
 import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 import { Toolbar } from "primereact/toolbar";
 import auctionService from "../service/AuctionService";
+import { useAuth } from "../service/AuthContext";
+import categoryService from "../service/CategoryService";
+import { InputText } from "primereact/inputtext";
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
+
+const statusOptions = [
+  { label: "Aberto", value: "OPEN" },
+  { label: "Em Andamento", value: "IN_PROGRESS" },
+  { label: "Encerrado", value: "CLOSED" },
+  { label: "Cancelado", value: "CANCELED" },
+];
 
 function AuctionListPage() {
+  const { user } = useAuth();
   const [auctions, setAuctions] = useState([]);
   const [loading, setLoading] = useState(true);
   const toast = useRef(null);
   const navigate = useNavigate();
 
+  const [filters, setFilters] = useState({
+    title: '',
+    status: null,
+    categoryId: null,
+    startDate: null,
+    endDate: null,
+  });
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    categoryService.getAll().then(response => {
+        const categoryOptions = response.data.content.map(cat => ({ label: cat.name, value: cat.id }));
+        setCategories(categoryOptions);
+    });
+  }, []);
+
   useEffect(() => {
     const fetchAuctions = async () => {
       try {
-        const response = await auctionService.getAll();
+        const apiFilters = {
+            ...filters,
+            startDate: filters.startDate ? filters.startDate.toISOString() : null,
+            endDate: filters.endDate ? filters.endDate.toISOString() : null,
+        };
+        const response = await auctionService.getAll(apiFilters);
         setAuctions(response.data.content || []);
       } catch (error) {
         toast.current.show({
@@ -31,7 +65,18 @@ function AuctionListPage() {
       }
     };
     fetchAuctions();
-  }, []);
+  }, [filters]);
+
+  const handleFilterChange = (e, name) => {
+    setFilters(prevFilters => ({
+        ...prevFilters,
+        [name]: e.value
+    }));
+  };
+  
+  const clearFilters = () => {
+    setFilters({ title: '', status: null, categoryId: null, startDate: null, endDate: null });
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -65,6 +110,13 @@ function AuctionListPage() {
   };
 
   const actionBodyTemplate = (rowData) => {
+    const isOwner = user?.id === rowData.seller?.id;
+    const isAdmin = user?.roles?.includes('ADMIN');
+
+    if (!isOwner && !isAdmin) {
+        return null; 
+    }
+
     return (
       <React.Fragment>
         <Button
@@ -93,12 +145,39 @@ function AuctionListPage() {
 
   const rightToolbarTemplate = () => (
     <Button
-      label="Nova"
+      label="Novo"
       icon="pi pi-plus"
       className="btn-add"
       onClick={() => navigate("/leiloes/novo")}
     />
   );
+
+  const filterBar = (
+    <div className="p-grid p-fluid p-mb-4" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'flex-end' }}>
+        <div className="p-col-12 p-md-3">
+            <span className="p-float-label">
+                <InputText id="title" value={filters.title} onChange={(e) => setFilters({...filters, title: e.target.value})} />
+                <label htmlFor="title">Título</label>
+            </span>
+        </div>
+        <div className="p-col-12 p-md-2">
+            <Dropdown value={filters.status} options={statusOptions} onChange={(e) => handleFilterChange(e, 'status')} placeholder="Status" showClear />
+        </div>
+        <div className="p-col-12 p-md-2">
+            <Dropdown value={filters.categoryId} options={categories} onChange={(e) => handleFilterChange(e, 'categoryId')} placeholder="Categoria" showClear />
+        </div>
+        <div className="p-col-12 p-md-2">
+            <Calendar value={filters.startDate} onChange={(e) => handleFilterChange(e, 'startDate')} placeholder="Data Início" dateFormat="dd/mm/yy" />
+        </div>
+        <div className="p-col-12 p-md-2">
+            <Calendar value={filters.endDate} onChange={(e) => handleFilterChange(e, 'endDate')} placeholder="Data Fim" dateFormat="dd/mm/yy" />
+        </div>
+        <div className="p-col-12 p-md-1">
+            <Button label="Limpar" icon="pi pi-filter-slash" className="p-button-outlined" onClick={clearFilters} />
+        </div>
+    </div>
+  );
+
 
   return (
     <div>
@@ -110,6 +189,10 @@ function AuctionListPage() {
         left={leftToolbarTemplate}
         right={rightToolbarTemplate}
       ></Toolbar>
+
+      <div className="card">
+        {filterBar}
+      </div>
 
       <DataTable
         value={auctions}
