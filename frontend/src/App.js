@@ -20,6 +20,7 @@ import CategoryListPage from "./pages/CategoryListPage";
 import CategoryForm from "./pages/CategoryForm";
 import AuctionListPage from "./pages/AuctionListPage";
 import AuctionForm from "./pages/AuctionForm";
+import PublicAuctionsPage from "./pages/PublicAuctionsPage";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/change-password" element={<ChangePassword />} />
+        <Route path="/" element={<PublicAuctionsPage />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

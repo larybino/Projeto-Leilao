@@ -1,6 +1,6 @@
 .header {
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .nav {
@@ -50,8 +50,8 @@
 }
 
 footer {
-  background-color: #1a202c; 
-  color: #edf2f7; 
+  background-color: #1a202c;
+  color: #edf2f7;
   text-align: center;
   padding: 1rem 2rem;
   font-size: 0.9rem;
@@ -62,4 +62,54 @@ footer {
 
 footer p {
   margin: 0;
+}
+
+.public-header {
+  background-color: #ffffff;
+  padding: 1rem 0;
+  border-bottom: 1px solid #dee2e6;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #8500cc;
+  cursor: pointer;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-enter {
+  padding: 0.75rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #8500cc;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-enter:hover {
+  background-color: #5100a3;
+}
+
+.btn-enter.p-button .p-button-label {
+  color: #ffffff !important;
 }

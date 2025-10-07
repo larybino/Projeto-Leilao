@@ -1,9 +1,12 @@
 package com.github.larybino.leilao.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
@@ -12,8 +15,11 @@ import com.github.larybino.leilao.enums.StatusAuction;
 import com.github.larybino.leilao.exception.NotFoundException;
 import com.github.larybino.leilao.model.Auction;
 import com.github.larybino.leilao.model.Person;
+import com.github.larybino.leilao.model.dto.PublicAuctionDTO;
 import com.github.larybino.leilao.repository.AuctionRepository;
 import com.github.larybino.leilao.utils.AuctionSpecification;
+
+import jakarta.persistence.criteria.Predicate;
 
 @Service
 public class AuctionService {
@@ -54,6 +60,44 @@ public class AuctionService {
     public Page<Auction> findAll(String title, StatusAuction status, Long categoryId, Date startDate, Date endDate, Pageable pageable) {
         Specification<Auction> spec = AuctionSpecification.filterBy(title, status, categoryId, startDate, endDate);
         return auctionRepository.findAll(spec, pageable);
+    }
+
+    public Page<PublicAuctionDTO> findAllPublic(String title, Long categoryId, boolean showPast, Pageable pageable) {
+        Sort sort = pageable.getSort();
+        if (sort.isUnsorted()) { 
+            sort = Sort.by(Sort.Direction.ASC, "endDate");
+        }
+        pageable = org.springframework.data.domain.PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+        Specification<Auction> spec = (root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (title != null && !title.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+            }
+            if (categoryId != null) {
+                predicates.add(cb.equal(root.get("category").get("id"), categoryId));
+            }
+            if (!showPast) {
+                predicates.add(root.get("status").in(StatusAuction.OPEN, StatusAuction.IN_PROGRESS));
+            }
+            return cb.and(predicates.toArray(new Predicate[0]));
+        };
+        Page<Auction> auctionPage = auctionRepository.findAll(spec, pageable);
+        return auctionPage.map(this::convertToPublicDTO);
+    }
+
+    private PublicAuctionDTO convertToPublicDTO(Auction auction) {
+        PublicAuctionDTO dto = new PublicAuctionDTO();
+        dto.setId(auction.getId());
+        dto.setTitle(auction.getTitle());
+        dto.setEndDate(auction.getEndDate());
+        dto.setCurrentPrice(auction.getMinBid()); 
+        if (auction.getCategory() != null) {
+            dto.setCategoryName(auction.getCategory().getName());
+        }
+        if (auction.getImages() != null && !auction.getImages().isEmpty()) {
+            dto.setCoverImageUrl(auction.getImages().get(0).getUrl());
+        }
+        return dto;
     }
 
 }
