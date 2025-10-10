@@ -1,5 +1,6 @@
 package com.github.larybino.leilao.controller;
 
+import com.github.larybino.leilao.model.dto.AuctionDetailDTO;
 import com.github.larybino.leilao.model.dto.PublicAuctionDTO;
 import com.github.larybino.leilao.service.AuctionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +26,11 @@ public class PublicAuctionController {
         
         Page<PublicAuctionDTO> auctionPage = auctionService.findAllPublic(title, categoryId, showPast, pageable);
         return ResponseEntity.ok(auctionPage);
+    }
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<AuctionDetailDTO> getPublicAuctionById(@PathVariable Long id) {
+        AuctionDetailDTO auction = auctionService.findPublicById(id);
+        return ResponseEntity.ok(auction);
     }
 }

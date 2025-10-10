@@ -32,6 +32,11 @@ class AuctionService extends BaseService {
     const response = await this.api.get(`/auction/public?${params.toString()}`);
     return response;
   }
+
+  async getPublicAuctionById(id) {
+    const response = await this.api.get(`/auction/public/${id}`);
+    return response;
+  }
 }
 const auctionService = new AuctionService();
 export default auctionService;

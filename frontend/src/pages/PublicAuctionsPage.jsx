@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { DataView, DataViewLayoutOptions } from 'primereact/dataview';
+import React, { useState, useEffect } from 'react';
+import { DataView } from 'primereact/dataview';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
@@ -10,7 +10,10 @@ import auctionService from '../service/AuctionService';
 import categoryService from '../service/CategoryService';
 import './styles.css'
 import PublicHeader from '../component/layout/PublicHeader';
+import { useNavigate } from 'react-router-dom';
+
 function PublicAuctionsPage() {
+    const navigate = useNavigate();
     const [auctions, setAuctions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -74,7 +77,7 @@ function PublicAuctionsPage() {
                         <div className="auction-price">
                             A partir de R$ {data.currentPrice.toFixed(2)}
                         </div>
-                        <Button label="Ver detalhes" icon="pi pi-arrow-right" className="p-button-sm p-button-outlined mt-2" onClick={() => {/* Futura navegação para /leiloes/:id */}} />
+                        <Button label="Ver detalhes" icon="pi pi-arrow-right" className="p-button-text p-mb-4" onClick={() => navigate(`/leiloes/${data.id}`)} />
                     </div>
                 </div>
             </div>

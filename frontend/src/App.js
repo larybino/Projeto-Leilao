@@ -21,6 +21,7 @@ import CategoryForm from "./pages/CategoryForm";
 import AuctionListPage from "./pages/AuctionListPage";
 import AuctionForm from "./pages/AuctionForm";
 import PublicAuctionsPage from "./pages/PublicAuctionsPage";
+import AuctionDetailPage from "./pages/AuctionDetailPage";
 
 function App() {
   return (
@@ -38,7 +39,7 @@ function App() {
             <Route path= "/categorias/:id"  element={<LayoutBasic><CategoryForm /></LayoutBasic>} />
             <Route path= "/leiloes"  element={<LayoutBasic><AuctionListPage /></LayoutBasic>} />
             <Route path= "/leiloes/novo"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
-            <Route path= "/leiloes/:id"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
+            {/* <Route path= "/leiloes/:id"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} /> */}
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -46,6 +47,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/change-password" element={<ChangePassword />} />
         <Route path="/" element={<PublicAuctionsPage />} />
+        <Route path="/leiloes/:id" element={<AuctionDetailPage />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>
