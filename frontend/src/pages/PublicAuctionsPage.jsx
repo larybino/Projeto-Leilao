@@ -118,7 +118,6 @@ function PublicAuctionsPage() {
 
     return (
         <>
-        <PublicHeader />
         <main className="public-auctions-page">
             <header className="page-header">
                 <h1>Leilões Disponíveis</h1>

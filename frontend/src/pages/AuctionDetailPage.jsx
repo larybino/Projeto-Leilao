@@ -21,7 +21,7 @@ function AuctionDetailPage() {
       .getPublicAuctionById(id)
       .then((response) => {
         setAuction(response.data);
-        document.title = `${response.data.title} — App Leilão`; // SEO Básico
+        document.title = `${response.data.title} — App Leilão`;
       })
       .catch((err) => {
         if (err.response && err.response.status === 404) {
@@ -58,7 +58,6 @@ function AuctionDetailPage() {
 
   return (
     <>
-      <PublicHeader />
       <main className="auction-detail-page">
         <Button 
                 label="Voltar para a lista" 

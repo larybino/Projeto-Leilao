@@ -1,24 +1,26 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import './stylesComponents.css';
-import { useAuth } from '../../service/AuthContext';
+import { NavLink, useNavigate } from "react-router-dom";
+import "./stylesComponents.css";
+import { useAuth } from "../../service/AuthContext";
 
 function Header() {
   const auth = useAuth();
   const navigate = useNavigate();
 
-  if (!auth) return null; 
+  if (!auth) return null;
 
   const { user, logout } = auth;
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
     <header className="header">
       <div className="container">
-        <div className="logo" onClick={() => navigate('/')}>App Leilão</div>
+        <div className="logo" onClick={() => navigate("/home")}>
+          App Leilão
+        </div>
 
         {user && (
           <div className="menu">
@@ -26,6 +28,7 @@ function Header() {
             <NavLink to="/profile">Perfis</NavLink>
             <NavLink to="/categorias">Categorias</NavLink>
             <NavLink to="/leiloes">Leilões</NavLink>
+            <NavLink to="/meu-perfil">Meu Perfil</NavLink>
             <button onClick={handleLogout}>Logout</button>
           </div>
         )}

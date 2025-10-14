@@ -1,13 +1,10 @@
+import PublicAuctionsPage from "./PublicAuctionsPage";
+
 const Home = () => {
   return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
-
-      <ul>
-        <li><a href="/change-password">Change Password</a></li>
-        <li><a href="/pessoas">Gerenciar Pessoas</a></li>
-      </ul>
-    </div>
+    <>
+      <PublicAuctionsPage/>
+    </>
   );
 };
 

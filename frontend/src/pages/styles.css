@@ -639,3 +639,71 @@ span {
 .auction-status-tag .p-tag-value {
   color: #ffffff !important;
 }
+
+.profile-page-container {
+  max-width: 960px;
+  margin: 2rem auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.profile-header-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+
+.profile-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.profile-avatar {
+  width: 70px !important;
+  height: 70px !important;
+  font-size: 2.5rem !important;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name-roles {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.user-name-roles h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #111827;
+}
+
+.user-roles-container {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.user-email {
+  margin: 0;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.profile-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.profile-tabs-card {
+  border-radius: 12px;
+}

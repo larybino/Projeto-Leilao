@@ -22,6 +22,8 @@ import AuctionListPage from "./pages/AuctionListPage";
 import AuctionForm from "./pages/AuctionForm";
 import PublicAuctionsPage from "./pages/PublicAuctionsPage";
 import AuctionDetailPage from "./pages/AuctionDetailPage";
+import ProfilePage from "./pages/ProfilePages";
+import PublicLayout from "./component/layout/PublicLayout";
 
 function App() {
   return (
@@ -32,6 +34,7 @@ function App() {
             <Route path="/home" element={<LayoutBasic><Home /></LayoutBasic>} />
             <Route path="/profile" element={<LayoutBasic><ProfileListPage /></LayoutBasic>} />
             <Route path="/profile/novo" element={<LayoutBasic><ProfileFormPage /></LayoutBasic>} />
+            <Route path="/meu-perfil" element={<LayoutBasic><ProfilePage /></LayoutBasic>} />
             <Route path="/pessoas" element={<LayoutBasic><PersonListPage /></LayoutBasic>} />
             <Route path="/pessoas/:id" element={<LayoutBasic><PersonEdit /></LayoutBasic>} />
             <Route path= "/categorias"  element={<LayoutBasic><CategoryListPage /></LayoutBasic>} />
@@ -46,8 +49,11 @@ function App() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/change-password" element={<ChangePassword />} />
-        <Route path="/" element={<PublicAuctionsPage />} />
+          <Route element={<PublicLayout />}>
+            <Route path="/" element={<PublicAuctionsPage />} />
+          </Route>
         <Route path="/leiloes/:id" element={<AuctionDetailPage />} />
+ 
       </Routes>
       </AuthProvider>
     </BrowserRouter>
