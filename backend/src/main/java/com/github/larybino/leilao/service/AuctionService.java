@@ -3,35 +3,53 @@ package com.github.larybino.leilao.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 
 import com.github.larybino.leilao.enums.StatusAuction;
+import com.github.larybino.leilao.exception.BusinessException;
 import com.github.larybino.leilao.exception.NotFoundException;
 import com.github.larybino.leilao.model.Auction;
+import com.github.larybino.leilao.model.Bid;
 import com.github.larybino.leilao.model.Feedback;
 import com.github.larybino.leilao.model.Person;
 import com.github.larybino.leilao.model.dto.AuctionDetailDTO;
 import com.github.larybino.leilao.model.dto.PublicAuctionDTO;
 import com.github.larybino.leilao.repository.AuctionRepository;
+import com.github.larybino.leilao.repository.BidRepository;
 import com.github.larybino.leilao.repository.FeedbackRepository;
 import com.github.larybino.leilao.utils.AuctionSpecification;
 
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 
 @Service
 public class AuctionService {
+    private static final Logger log = LoggerFactory.getLogger(AuctionService.class);
     @Autowired
     private AuctionRepository auctionRepository;
     @Autowired
     private FeedbackRepository feedbackRepository;
+    @Autowired
+    private BidRepository bidRepository;
 
     public Auction create(Auction auction, Person seller) {
+        Date agora = new Date();
+        if (auction.getStartDate() == null || auction.getStartDate().before(agora)) {
+            throw new BusinessException("A data de início não pode ser no passado."); 
+        }
+        if (auction.getEndDate() == null || auction.getEndDate().before(auction.getStartDate())) {
+            throw new BusinessException("A data de término deve ser após a data de início.");
+        }
         auction.setSeller(seller);
         return auctionRepository.save(auction);
     }
@@ -131,7 +149,9 @@ public class AuctionService {
             dto.setCategoryName(auction.getCategory().getName());
         }
 
-        dto.setCurrentPrice(auction.getMinBid());
+        Float highestBid = bidRepository.findHighestBidAmount(auction.getId())
+                .orElse(auction.getMinBid()); 
+        dto.setCurrentPrice(highestBid);
 
         if (auction.getSeller() != null) {
             AuctionDetailDTO.SellerInfoDTO sellerDTO = new AuctionDetailDTO.SellerInfoDTO();
@@ -157,4 +177,30 @@ public class AuctionService {
         return dto;
     }
 
+    @Scheduled(fixedRate = 60000)
+    @Transactional
+    public void updateAuctionStatuses() {
+        log.info("Executando verificação de status de leilões...");
+        Date now = new Date();
+
+        List<Auction> auctionsToStart = auctionRepository.findByStatusAndStartDateBefore(StatusAuction.OPEN, now);
+        for (Auction auction : auctionsToStart) {
+            log.info("Iniciando leilão ID: {}", auction.getId());
+            auction.setStatus(StatusAuction.IN_PROGRESS);
+            auctionRepository.save(auction);
+        }
+
+        List<Auction> auctionsToClose = auctionRepository.findByStatusAndEndDateBefore(StatusAuction.IN_PROGRESS, now);
+        for (Auction auction : auctionsToClose) {
+            log.info("Encerrando leilão ID: {}", auction.getId());
+            auction.setStatus(StatusAuction.CLOSED);
+            
+            Optional<Bid> topBid = bidRepository.findTopByAuctionIdOrderByAmountDesc(auction.getId());
+            if (topBid.isPresent()) {
+                auction.setWinner(topBid.get().getPerson());
+            }
+            
+            auctionRepository.save(auction);
+        }
+    }
 }

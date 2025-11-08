@@ -50,8 +50,9 @@ public class SecurityConfig {
                         .requestMatchers("/auction/public").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auction/public/**").permitAll()
                         .requestMatchers("/uploads/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/categories", "/categories/**").permitAll()
-
+                        .requestMatchers(HttpMethod.GET, "/categories").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
+                        // .requestMatchers("/actuator/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

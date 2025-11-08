@@ -5,17 +5,19 @@ import { Tag } from "primereact/tag";
 import { Galleria } from "primereact/galleria";
 import { Rating } from "primereact/rating";
 import auctionService from "../service/AuctionService";
-import PublicHeader from "../component/layout/PublicHeader";
 import { formatCurrencyBRL, formatDateBRL } from "../utils/formatters";
 import "./styles.css";
+import { useAuth } from "../service/AuthContext";
+import AuctionBidComponent from "./AuctionBidComponent";
 
 function AuctionDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [auction, setAuction] = useState(null);
+  const [auction, setAuction] = useState(null); 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const { user } = useAuth();
+  
   useEffect(() => {
     auctionService
       .getPublicAuctionById(id)
@@ -41,6 +43,10 @@ function AuctionDetailPage() {
     return <div className="error-message">{error}</div>;
   }
 
+  if (!auction) {
+    return <div className="error-message">Leilão não encontrado.</div>;
+  }
+
   const itemTemplate = (item) => (
     <img
       src={item.url}
@@ -60,11 +66,11 @@ function AuctionDetailPage() {
     <>
       <main className="auction-detail-page">
         <Button 
-                label="Voltar para a lista" 
-                icon="pi pi-arrow-left" 
-                className="p-button-text p-mb-4" 
-                onClick={() => navigate(-1)} 
-            />
+            label="Voltar para a lista" 
+            icon="pi pi-arrow-left" 
+            className="p-button-text p-mb-4" 
+            onClick={() => navigate(-1)} 
+        />
         <div className="auction-grid">
           <section className="gallery-section">
             <Galleria
@@ -84,23 +90,38 @@ function AuctionDetailPage() {
                 <span>Início: {formatDateBRL(auction.startDate)}</span>
                 <span>Término: {formatDateBRL(auction.endDate)}</span>
               </div>
-              <div className="price-info">
-                <div className="price-item">
-                  <small>Lance Mínimo</small>
-                  <strong>{formatCurrencyBRL(auction.minBid)}</strong>
+              
+              {auction.status !== 'OPEN' && auction.status !== 'IN_PROGRESS' ? (
+                <div className="price-info">
+                  <Tag className="auction-status-tag" value={`Leilão ${auction.status}`} />
+                  <h4 className="mt-3">Este leilão não está mais aceitando lances.</h4>
                 </div>
-                <div className="price-item">
-                  <small>Maior Lance Atual</small>
-                  <strong className="current-bid">
-                    {formatCurrencyBRL(auction.highestBid)}
-                  </strong>
-                </div>
-              </div>
-              <Button
-                label="Entrar para dar lance"
-                className="btn-enter"
-                onClick={() => navigate("/login")}
-              />
+              ) : (
+                user ? (
+                  <AuctionBidComponent auction={auction} />
+                ) : (
+                  <>
+                    <div className="price-info">
+                      <div className="price-item">
+                        <small>Lance Atual</small>
+                        <strong className="current-bid">
+                          {formatCurrencyBRL(auction.currentPrice)}
+                        </strong>
+                      </div>
+                      <div className="price-item">
+                        <small>Incremento Mínimo</small>
+                        <strong>{formatCurrencyBRL(auction.incrementValue)}</strong>
+                      </div>
+                    </div>
+                    <Button
+                      label="Entrar para dar lance"
+                      className="btn-enter"
+                      onClick={() => navigate("/login")}
+                    />
+                  </>
+                )
+              )}
+ 
               {auction.seller && (
                 <div className="seller-info">
                   Vendido por <strong>{auction.seller.name}</strong>

@@ -169,6 +169,7 @@ function PersonListPage() {
             style={{ minWidth: "10rem" }}
           />
           <Column
+            header="Ações"
             body={actionBodyTemplate}
             exportable={false}
             style={{ minWidth: "8rem", textAlign: "center" }}

@@ -16,10 +16,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -42,12 +42,10 @@ public class Auction {
     private String detailsDescription;
 
     @NotNull(message = "A data de início é obrigatória")
-    @FutureOrPresent(message = "A data de início não pode ser no passado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @NotNull(message = "A data de término é obrigatória")
-    @FutureOrPresent(message = "A data de término não pode ser no passado")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
@@ -79,4 +77,9 @@ public class Auction {
 
     @OneToMany(mappedBy = "auction", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Img> images;
+    private String emailUserBid;
+
+    @OneToMany(mappedBy = "auction")
+    @OrderBy("amount DESC") 
+    private List<Bid> bids;
 }

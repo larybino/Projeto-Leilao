@@ -42,7 +42,7 @@ function App() {
             <Route path= "/categorias/:id"  element={<LayoutBasic><CategoryForm /></LayoutBasic>} />
             <Route path= "/leiloes"  element={<LayoutBasic><AuctionListPage /></LayoutBasic>} />
             <Route path= "/leiloes/novo"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
-            {/* <Route path= "/leiloes/:id"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} /> */}
+            <Route path= "/leiloes/:id"  element={<LayoutBasic><AuctionForm /></LayoutBasic>} />
           </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -52,8 +52,7 @@ function App() {
           <Route element={<PublicLayout />}>
             <Route path="/" element={<PublicAuctionsPage />} />
           </Route>
-        <Route path="/leiloes/:id" element={<AuctionDetailPage />} />
- 
+        <Route path="leilao/publico/:id" element={<AuctionDetailPage />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

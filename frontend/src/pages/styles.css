@@ -436,20 +436,16 @@ span {
   margin-bottom: 1.5rem;
 }
 
-.public-auctions-page .p-input-icon-left {
+ .public-auctions-page .p-input-icon-left {
   flex: 1 1 300px;
   max-width: 400px;
 }
 
-.public-auctions-page .p-input-icon-left i {
-  color: #6b7280;
-}
-
-.public-auctions-page .p-inputtext,
+ .public-auctions-page .p-inputtext,
 .public-auctions-page .p-dropdown {
   border-radius: 8px;
   width: 100%;
-}
+} 
 
 .public-auctions-page .p-dropdown {
   flex: 1 1 180px;
@@ -544,14 +540,13 @@ span {
 
 .auction-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Mobile-first: 1 coluna */
+  grid-template-columns: 1fr; 
   gap: 1.5rem;
 }
 
-/* Em telas maiores, usamos 2 colunas */
 @media (min-width: 992px) {
   .auction-grid {
-    grid-template-columns: 3fr 2fr; /* Galeria maior, infos menor */
+    grid-template-columns: 3fr 2fr; 
     grid-template-areas:
       "gallery info"
       "desc    desc";
