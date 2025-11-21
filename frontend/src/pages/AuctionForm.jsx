@@ -185,6 +185,7 @@ function AuctionForm() {
         <InputText
           id="title"
           value={title}
+          className="input"
           onChange={(e) => setTitle(e.target.value)}
           required
         />
@@ -195,6 +196,7 @@ function AuctionForm() {
         <InputText
           id="description"
           value={description}
+          className="input"
           onChange={(e) => setDescription(e.target.value)}
           required
         />
@@ -206,6 +208,7 @@ function AuctionForm() {
           id="category"
           value={categoryId}
           options={categories}
+          className="dropdown"
           onChange={(e) => setCategoryId(e.value)}
           placeholder="Selecione a categoria"
           required
@@ -217,6 +220,7 @@ function AuctionForm() {
         <InputText
           id="detailsDescription"
           value={detailsDescription}
+          className="input"
           onChange={(e) => setDetailsDescription(e.target.value)}
         />
       </div>
@@ -226,6 +230,7 @@ function AuctionForm() {
         <Calendar
           id="startDate"
           value={startDate}
+          className="calendar"
           onChange={(e) => setStartDate(e.value)}
           showTime
           dateFormat="dd/mm/yy"
@@ -237,6 +242,7 @@ function AuctionForm() {
         <Calendar
           id="endDate"
           value={endDate}
+          className="calendar"
           onChange={(e) => setEndDate(e.value)}
           showTime
           dateFormat="dd/mm/yy"
@@ -249,6 +255,7 @@ function AuctionForm() {
           id="status"
           value={status}
           options={statusOptions}
+          className="dropdown"
           onChange={(e) => setStatus(e.value)}
           placeholder="Selecione o status"
         />
@@ -259,6 +266,7 @@ function AuctionForm() {
         <InputText
           id="obs"
           value={obs}
+          className="input"
           onChange={(e) => setObs(e.target.value)}
         />
       </div>
@@ -268,6 +276,7 @@ function AuctionForm() {
         <InputText
           id="incrementValue"
           value={incrementValue}
+          className="input"
           onChange={(e) => setIncrementValue(e.target.value)}
         />
       </div>
@@ -277,6 +286,7 @@ function AuctionForm() {
         <InputText
           id="minBid"
           value={minBid}
+          className="input"
           onChange={(e) => setMinBid(e.target.value)}
         />
       </div>
@@ -284,28 +294,30 @@ function AuctionForm() {
   );
 
   return (
-        <div>
-            <Toast ref={toast} />
-            <Dialog header={isEditing ? "Editar Leilão" : "Adicionar Novo Leilão"} visible={visible} style={{ width: "50vw" }} footer={renderFooter()} onHide={closeModal}>
-                {pageLoading ? (
-                    <div className="flex justify-content-center p-5">
-                        <ProgressSpinner />
-                    </div>
-                ) : (
-                    <TabView>
-                        <TabPanel header="Dados do Leilão">
-                            {formContent}
-                        </TabPanel>
-                        {isEditing && (
-                            <TabPanel header="Imagens">
-                                <ImgForm auctionId={id} />
-                            </TabPanel>
-                        )}
-                    </TabView>
-                )}
-            </Dialog>
-        </div>
-    );
+    <div>
+      <Toast ref={toast} />
+      <Dialog
+        header={isEditing ? "Editar Leilão" : "Adicionar Novo Leilão"}
+        visible={visible}
+        className="auction-dialog"
+        footer={renderFooter()}
+        onHide={closeModal}
+        style={{
+          width: "620px",
+          maxWidth: "95vw",
+        }}
+      >
+        <TabView>
+          <TabPanel header="Dados do Leilão">
+            <div className="auction-form">{formContent}</div>
+          </TabPanel>
+          <TabPanel header="Imagens">
+            <ImgForm auctionId={id} />
+          </TabPanel>
+        </TabView>
+      </Dialog>
+    </div>
+  );
 }
 
 export default AuctionForm;

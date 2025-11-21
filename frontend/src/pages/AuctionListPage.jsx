@@ -20,6 +20,8 @@ const statusOptions = [
   { label: "Cancelado", value: "CANCELED" },
 ];
 
+const statusMap = Object.fromEntries(statusOptions.map(s => [s.value, s.label]));
+
 function AuctionListPage() {
   const { user } = useAuth();
   const [auctions, setAuctions] = useState([]);
@@ -122,7 +124,7 @@ function AuctionListPage() {
         <Button
           icon="pi pi-pencil"
           rounded
-          className="p-button-text p-button-success mr-2"
+          className="btn-edit"
           onClick={() => navigate(`/leiloes/${rowData.id}`)}
           tooltip="Editar"
           tooltipOptions={{ position: "top" }}
@@ -130,7 +132,7 @@ function AuctionListPage() {
         <Button
           icon="pi pi-trash"
           rounded
-          className="p-button-text p-button-danger"
+          className="btn-delete"
           onClick={() => confirmDelete(rowData.id)}
           tooltip="Excluir"
           tooltipOptions={{ position: "top" }}
@@ -173,7 +175,7 @@ function AuctionListPage() {
             <Calendar value={filters.endDate} onChange={(e) => handleFilterChange(e, 'endDate')} placeholder="Data Fim" dateFormat="dd/mm/yy" />
         </div>
         <div className="p-col-12 p-md-1">
-            <Button label="Limpar" icon="pi pi-filter-slash" className="p-button-outlined" onClick={clearFilters} />
+            <Button label="Limpar" icon="pi pi-filter-slash" className="btn-save" onClick={clearFilters} />
         </div>
     </div>
   );
@@ -204,12 +206,7 @@ function AuctionListPage() {
         responsiveLayout="scroll"
         dataKey="id"
       >
-        <Column
-          field="id"
-          header="ID"
-          sortable
-          style={{ maxWidth: "8rem" }}
-        ></Column>
+      
         <Column
           field="title"
           header="Título"
@@ -221,12 +218,7 @@ function AuctionListPage() {
           header="Descrição"
           style={{ minWidth: "16rem" }}
         ></Column>
-        <Column
-          field="detailsDescription"
-          header="Detalhes"
-          sortable
-          style={{ minWidth: "12rem" }}
-        ></Column>
+       
 
         <Column
           field="startDate"
@@ -245,13 +237,9 @@ function AuctionListPage() {
           header="Status"
           sortable
           style={{ minWidth: "12rem" }}
+          body={(row) => statusMap[row.status] || row.status}
         ></Column>
-        <Column
-          field="obs"
-          header="Observação"
-          sortable
-          style={{ minWidth: "12rem" }}
-        ></Column>
+  
         <Column
           field="incrementValue"
           header="Valor Incrementado"
@@ -265,10 +253,9 @@ function AuctionListPage() {
           sortable
         />
         <Column
-          header="Ações"
           body={actionBodyTemplate}
           exportable={false}
-          style={{ minWidth: "8rem", textAlign: "center" }}
+          style={{ minWidth: "8rem"}}
         ></Column>
       </DataTable>
     </div>

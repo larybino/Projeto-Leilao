@@ -80,15 +80,15 @@ function CategoryListPage() {
         <Button
           icon="pi pi-pencil"
           rounded
-          className="p-button-text p-button-success mr-2"
-          onClick={() => navigate(`/categorias/${rowData.id}`)} // Rota para editar categoria
+          className="btn-edit"
+          onClick={() => navigate(`/categorias/${rowData.id}`)}
           tooltip="Editar"
           tooltipOptions={{ position: "top" }}
         />
         <Button
           icon="pi pi-trash"
           rounded
-          className="p-button-text p-button-danger"
+          className="btn-delete"
           onClick={() => confirmDelete(rowData.id)}
           tooltip="Excluir"
           tooltipOptions={{ position: "top" }}
@@ -143,12 +143,6 @@ function CategoryListPage() {
         dataKey="id"
       >
         <Column
-          field="id"
-          header="ID"
-          sortable
-          style={{ maxWidth: "8rem" }}
-        ></Column>
-        <Column
           field="name"
           header="Nome"
           sortable
@@ -160,10 +154,9 @@ function CategoryListPage() {
           style={{ minWidth: "16rem" }}
         ></Column>
         <Column
-          header="Ações"
           body={actionBodyTemplate}
           exportable={false}
-          style={{ minWidth: "8rem", textAlign: "center" }}
+          style={{ minWidth: "8rem"}}
         ></Column>
       </DataTable>
     </div>

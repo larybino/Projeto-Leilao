@@ -98,12 +98,14 @@ function PersonListPage() {
       <div className="actions">
         <Button
           icon="pi pi-pencil"
+          rounded
           className="btn-edit"
           onClick={() => navigate(`/pessoas/${rowData.id}`)}
           tooltip="Editar"
         />
         <Button
           icon="pi pi-trash"
+          rounded
           className="btn-delete"
           onClick={() => confirmDelete(rowData.id)}
           tooltip="Excluir"
@@ -116,7 +118,6 @@ function PersonListPage() {
     <span className="p-input-icon-left">
       <i className="pi pi-search" />
       <InputText
-        className="input"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Buscar nome ou email..."
@@ -169,10 +170,9 @@ function PersonListPage() {
             style={{ minWidth: "10rem" }}
           />
           <Column
-            header="Ações"
             body={actionBodyTemplate}
             exportable={false}
-            style={{ minWidth: "8rem", textAlign: "center" }}
+            style={{ minWidth: "8rem" }}
           />
         </DataTable>
       </div>

@@ -11,4 +11,5 @@ public class PublicAuctionDTO {
     private Date endDate;
     private Float currentPrice;
     private String coverImageUrl;
+    private String emailUserBid;
 }

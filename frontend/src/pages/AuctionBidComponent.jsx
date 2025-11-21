@@ -11,7 +11,7 @@ function AuctionBidComponent({ auction }) {
     const [isConnected, setIsConnected] = useState(false);
 
     const [currentBid, setCurrentBid] = useState(auction?.currentPrice || auction?.minBid || 0);
-    const [lastBidderEmail, setLastBidderEmail] = useState('Nenhum lance');
+    const [emailUserBid, setEmailUserBid] = useState(auction?.emailUserBid || 'Nenhum lance');
 
     const stompClientRef = useRef(null);
 
@@ -21,6 +21,7 @@ function AuctionBidComponent({ auction }) {
         }
 
         setCurrentBid(auction.currentPrice || auction.minBid || 0);
+        setEmailUserBid(auction.emailUserBid || 'Nenhum lance');
 
         const socketFactory = () => new SockJS('http://localhost:8080/ws');
         const client = new Client({
@@ -60,7 +61,7 @@ function AuctionBidComponent({ auction }) {
     const handleNewBidMessage = (message) => {
         const messageBody = JSON.parse(message.body);
         setCurrentBid(messageBody.newValue);
-        setLastBidderEmail(messageBody.emailUser);
+        setEmailUserBid(messageBody.emailUser);
     };
 
     const handleSendBid = () => {
@@ -86,14 +87,14 @@ function AuctionBidComponent({ auction }) {
     return (
         <div className="bid-container">
             <h3>Dar um Lance</h3>
-            <div className="bid-info">
-                <div className="bid-item">
+            <div className="price-info">
+                <div className="price-item">
                     <small>Lance Atual</small>
                     <strong className="current-bid">{formatCurrencyBRL(currentBid)}</strong>
                 </div>
-                <div className="bid-item">
+                <div className="price-item">
                     <small>Último lance de</small>
-                    <strong>{lastBidderEmail}</strong>
+                    <strong>{emailUserBid}</strong>
                 </div>
             </div>
             

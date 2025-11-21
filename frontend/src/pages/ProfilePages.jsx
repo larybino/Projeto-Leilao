@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import { Avatar } from 'primereact/avatar';
-import { Rating } from 'primereact/rating';
+// import { Rating } from 'primereact/rating';
 import { TabView, TabPanel } from 'primereact/tabview';
 import { Skeleton } from 'primereact/skeleton';
-import { Badge } from 'primereact/badge'; 
+// import { Badge } from 'primereact/badge'; 
 import profileService from '../service/ProfileService';
 import { useAuth } from '../service/AuthContext';
 import './styles.css';
 import MyAuctionsPage from './MyAuctionsPage';
-import FeedbackList from './FeedbackList';
+// import FeedbackList from './FeedbackList';
 import { Tag } from 'primereact/tag';
 
 function ProfilePage() {
@@ -64,18 +64,15 @@ function ProfilePage() {
                             </div>
                         </div>
                         <p className="user-email">{profile.email}</p>
-                        <div className="profile-rating">
+                        {/* <div className="profile-rating">
                             <Rating value={profile.averageRating} readOnly cancel={false} />
                             <span>({profile.feedbackCount} avaliações)</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
             <div className="profile-tabs-card">
                 <TabView>
-                    <TabPanel header="Feedbacks Recebidos" leftIcon="pi pi-inbox mr-2">
-                        <FeedbackList userId={authUser.id} />
-                    </TabPanel>
                     <TabPanel header="Meus Leilões" leftIcon="pi pi-shopping-cart mr-2">
                         <MyAuctionsPage />
                     </TabPanel>

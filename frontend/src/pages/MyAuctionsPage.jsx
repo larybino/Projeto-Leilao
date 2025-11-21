@@ -15,7 +15,12 @@ function MyAuctionsPage() {
 
   const [isFeedbackModalVisible, setFeedbackModalVisible] = useState(false);
   const [selectedAuction, setSelectedAuction] = useState(null);
-
+  const statusLabel = {
+    OPEN: "Aberto",
+    IN_PROGRESS: "Andamento",
+    CLOSED: "Encerrado",
+    CANCELED: "Cancelado",
+  };
   const fetchAuctions = () => {
     setLoading(true);
     auctionService
@@ -66,7 +71,7 @@ function MyAuctionsPage() {
         <Column
           header="Status"
           body={(rowData) => (
-            <Tag className="auction-status-tag" value={rowData.status} />
+            <Tag className="auction-status-tag" value={statusLabel[rowData.status]} />
           )}
         />{" "}
       </DataTable>

@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import com.github.larybino.leilao.enums.StatusAuction;
 import com.github.larybino.leilao.exception.BusinessException;
@@ -91,7 +92,7 @@ public class AuctionService {
         if (sort.isUnsorted()) {
             sort = Sort.by(Sort.Direction.ASC, "endDate");
         }
-        pageable = org.springframework.data.domain.PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
                 sort);
         Specification<Auction> spec = (root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -122,6 +123,7 @@ public class AuctionService {
         if (auction.getImages() != null && !auction.getImages().isEmpty()) {
             dto.setCoverImageUrl(auction.getImages().get(0).getUrl());
         }
+        dto.setEmailUserBid(auction.getEmailUserBid());
         return dto;
     }
 

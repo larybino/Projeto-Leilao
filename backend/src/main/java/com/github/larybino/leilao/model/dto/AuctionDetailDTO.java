@@ -22,6 +22,7 @@ public class AuctionDetailDTO {
     private Float currentPrice;
     private String categoryName;
     private List<Img> images;
+    private String emailUserBid;
     private SellerInfoDTO seller;
 
     @Data

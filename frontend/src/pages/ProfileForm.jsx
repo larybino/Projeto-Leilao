@@ -17,7 +17,7 @@ function ProfileFormPage() {
   const [type, setType] = useState("");
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(isEditing);
-  const [visible, setVisible] = useState(true); // controla a abertura do modal
+  const [visible, setVisible] = useState(true); 
 
   useEffect(() => {
     if (isEditing) {
@@ -83,7 +83,7 @@ function ProfileFormPage() {
 
   const closeModal = () => {
     setVisible(false);
-    navigate("/profile"); // redireciona ao fechar
+    navigate("/profile"); 
   };
 
   const renderFooter = () => (

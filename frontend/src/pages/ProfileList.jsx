@@ -71,6 +71,7 @@ function ProfileListPage() {
       <div className="action">
         <Button
           icon="pi pi-trash"
+          rounded
           className="btn-delete"
           onClick={() => confirmDelete(rowData.id)}
           tooltip="Excluir"
@@ -118,7 +119,6 @@ function ProfileListPage() {
           style={{ minWidth: "12rem" }}
         ></Column>
         <Column
-          header="Ações"
           body={actionBodyTemplate}
           exportable={false}
           style={{ width: "8rem", textAlign: "center" }}

@@ -8,12 +8,13 @@
   min-height: 100vh;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px #8500cc;
+  padding: 1rem;
 }
 
 .p-card {
   width: 100%;
   max-width: 400px;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px #8500cc;
@@ -35,12 +36,11 @@
 
 .change-password-page {
   max-width: 400px;
-  margin: auto;
+  margin: 2rem auto;
   padding: 1.5rem;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px #8500cc;
   border-radius: 12px;
-  margin-top: 3rem;
   text-align: center;
 }
 
@@ -48,12 +48,49 @@ h2 {
   margin-bottom: 1rem;
 }
 
-.input {
+.input,
+.p-password input {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #8500cc;
   border-radius: 6px;
   font-size: 1rem;
+}
+
+.dropdown .p-dropdown-label {
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.dropdown {
+  width: 100%;
+  border: 1px solid #8500cc;
+  border-radius: 6px;
+}
+
+.calendar .p-inputtext {
+  padding: 0.75rem;
+  font-size: 1rem;
+}
+
+.calendar {
+  width: 100%;
+  border: 1px solid #8500cc;
+  border-radius: 6px;
+}
+
+.p-checkbox .p-checkbox-box {
+  border: 2px solid #ccc !important;
+  border-radius: 4px;
+}
+
+.p-checkbox .p-checkbox-box,
+.p-checkbox .p-checkbox-box.p-highlight {
+  background: #fff !important;
+}
+
+.p-checkbox .p-checkbox-box .p-checkbox-icon {
+  color: #8500cc !important;
 }
 
 .p-input-icon-left .p-inputtext {
@@ -62,18 +99,6 @@ h2 {
 
 .p-password {
   width: 100% !important;
-  min-width: 100% !important;
-  max-width: 100% !important;
-}
-
-.p-password input {
-  width: 100% !important;
-  padding: 0.75rem;
-  border: 1px solid #8500cc;
-  border-radius: 6px;
-  font-size: 1rem;
-  min-width: 100% !important;
-  max-width: 100% !important;
 }
 
 .p-password .p-password-input {
@@ -124,11 +149,32 @@ span {
   color: #8500cc;
 }
 
+@media (min-width: 768px) {
+  .p-card {
+    padding: 2rem;
+  }
+
+  .change-password-page {
+    margin-top: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .login-page,
+  .register-page,
+  .forgot-password-page,
+  .reset-password-page {
+    padding: 2rem;
+  }
+}
+
+/* personlist */
 .person-list-container {
+  width: 100%;
   max-width: 900px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   background-color: #fff;
-  padding: 1.5rem;
+  padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-family: "Arial", sans-serif;
@@ -136,13 +182,14 @@ span {
 
 .person-list-container .header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
 .person-list-container h1 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: #333;
 }
 
@@ -184,12 +231,7 @@ span {
   background-color: #cc00cc !important;
 }
 
-.btn-cancel.p-button {
-  margin-top: 12px;
-  background-color: transparent !important;
-  border: none !important;
-}
-
+.btn-cancel.p-button,
 .btn-save.p-button {
   margin-top: 12px;
   background-color: transparent !important;
@@ -203,7 +245,7 @@ span {
 
 .person-table th,
 .person-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.6rem;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
@@ -222,9 +264,40 @@ span {
   background-color: #f9fafb;
 }
 
+@media (min-width: 600px) {
+  .person-list-container {
+    padding: 1.5rem;
+  }
+
+  .person-table th,
+  .person-table td {
+    padding: 0.75rem 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .person-list-container .header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .person-list-container h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .person-list-container {
+    margin: 2rem auto;
+  }
+}
+
+/* profile */
 .profile-list-container {
+  width: 100%;
   max-width: 900px;
-  margin: 2rem auto;
+  margin: 1rem auto;
   padding: 1rem;
   background-color: #fff;
   border-radius: 8px;
@@ -233,13 +306,14 @@ span {
 
 .profile-list-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
   margin-bottom: 1rem;
 }
 
 .profile-list-header h1 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #333;
 }
@@ -266,7 +340,7 @@ span {
 
 .profile-table th,
 .profile-table td {
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.7rem;
   border-bottom: 1px solid #ddd;
   text-align: left;
 }
@@ -275,7 +349,7 @@ span {
   background-color: #f3f4f6;
   font-weight: 600;
   text-transform: uppercase;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #555;
 }
 
@@ -287,10 +361,11 @@ span {
   text-align: center;
 }
 
+/* Formulário de edição */
 .person-edit {
   max-width: 500px;
-  margin: 2rem auto;
-  padding: 2rem;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -313,7 +388,7 @@ span {
 .form-button {
   display: flex;
   justify-content: center;
-  gap: 4;
+  gap: 1rem;
 }
 
 .toolbar-right-content {
@@ -322,14 +397,44 @@ span {
   gap: 1rem;
 }
 
+@media (min-width: 768px) {
+  .profile-list-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .profile-list-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .profile-table th,
+  .profile-table td {
+    padding: 0.75rem 1rem;
+  }
+
+  .person-edit {
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-list-container {
+    margin: 2rem auto;
+    padding: 1.5rem;
+  }
+}
+
+/* image manager */
 .image-manager-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: #000000;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
+  color: #000;
+  margin-top: 1rem;
+  margin-bottom: 0.8rem;
   border-bottom: 1px solid #eee;
-  padding-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
 }
 
 .p-galleria .p-galleria-item-wrapper .p-galleria-item {
@@ -341,7 +446,7 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 450px;
+  height: 260px;
 }
 
 .gallery-main-image {
@@ -352,8 +457,8 @@ span {
 
 .delete-image-button.p-button {
   position: absolute;
-  top: 1rem;
-  left: 15rem;
+  top: 0.8rem;
+  right: 0.8rem;
   background-color: rgba(0, 0, 0, 0.5) !important;
   color: white !important;
   border: none !important;
@@ -369,8 +474,8 @@ span {
 }
 
 .gallery-thumbnail-image {
-  width: 80px;
-  height: 60px;
+  width: 60px;
+  height: 50px;
   object-fit: cover;
   border-radius: 4px;
   background-color: #e9ecef;
@@ -397,8 +502,44 @@ span {
   border-color: #a100ff;
 }
 
+@media (min-width: 600px) {
+  .image-gallery-item {
+    height: 350px;
+  }
+
+  .gallery-thumbnail-image {
+    width: 70px;
+    height: 55px;
+  }
+}
+
+@media (min-width: 768px) {
+  .image-manager-title {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .image-gallery-item {
+    height: 450px;
+  }
+
+  .delete-image-button.p-button {
+    right: auto;
+    left: 15rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gallery-thumbnail-image {
+    width: 80px;
+    height: 60px;
+  }
+}
+
+/* pagina publica */
 .public-auctions-page {
-  padding: 2rem;
+  padding: 1.5rem;
   background-color: #f8fafc;
   min-height: 100vh;
   display: flex;
@@ -408,47 +549,45 @@ span {
 
 .page-header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .page-header h1 {
-  font-size: 2rem;
+  font-size: 1.6rem;
   font-weight: 600;
   color: #1f2937;
 }
 
 .public-auctions-page .card {
   width: 100%;
-  max-width: 1200px;
   background-color: #ffffff;
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
-  padding: 1.5rem;
+  padding: 1rem;
 }
 
 .public-auctions-page .dataview-header,
 .public-auctions-page .grid.grid-nogutter.align-items-center {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
   gap: 1rem;
-  justify-content: space-between;
   margin-bottom: 1.5rem;
+  width: 100%;
+  align-items: stretch;
 }
 
- .public-auctions-page .p-input-icon-left {
-  flex: 1 1 300px;
-  max-width: 400px;
+.public-auctions-page .p-input-icon-left {
+  width: 100%;
 }
 
- .public-auctions-page .p-inputtext,
+.public-auctions-page .p-inputtext,
 .public-auctions-page .p-dropdown {
   border-radius: 8px;
   width: 100%;
-} 
+}
 
 .public-auctions-page .p-dropdown {
-  flex: 1 1 180px;
+  width: 100%;
 }
 
 .public-auctions-page .checkbox-group {
@@ -471,7 +610,7 @@ span {
 
 .p-dataview-content .p-grid > div {
   padding: 0.75rem;
-  width: 33.3333%;
+  width: 100%;
 }
 
 .auction-card {
@@ -493,7 +632,7 @@ span {
 
 .auction-image {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
   background-color: #e5e7eb;
 }
@@ -526,10 +665,40 @@ span {
 }
 
 .auction-price {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #8500cc;
   margin: 0.75rem 0;
+}
+
+@media (min-width: 768px) {
+  .public-auctions-page .dataview-header,
+  .public-auctions-page .grid.grid-nogutter.align-items-center {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .public-auctions-page .filter-search {
+    flex: 1;
+    max-width: 320px;
+  }
+
+  .public-auctions-page .filter-category,
+  .public-auctions-page .filter-sort {
+    width: 200px;
+  }
+
+  .public-auctions-page .checkbox-group-wrapper {
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .public-auctions-page .p-inputtext,
+  .public-auctions-page .p-dropdown {
+    width: 100%;
+  }
 }
 
 .auction-detail-page {
@@ -540,26 +709,8 @@ span {
 
 .auction-grid {
   display: grid;
-  grid-template-columns: 1fr; 
+  grid-template-columns: 1fr;
   gap: 1.5rem;
-}
-
-@media (min-width: 992px) {
-  .auction-grid {
-    grid-template-columns: 3fr 2fr; 
-    grid-template-areas:
-      "gallery info"
-      "desc    desc";
-  }
-  .gallery-section {
-    grid-area: gallery;
-  }
-  .info-section {
-    grid-area: info;
-  }
-  .description-section {
-    grid-area: desc;
-  }
 }
 
 .card {
@@ -570,13 +721,15 @@ span {
 }
 
 .info-section .auction-title {
-  font-size: 2rem;
+  font-size: 1.6rem;
   margin: 0.5rem 0;
 }
+
 .info-section .auction-category {
   color: #6c757d;
   font-weight: 500;
 }
+
 .info-section .auction-period {
   display: flex;
   flex-direction: column;
@@ -587,21 +740,31 @@ span {
 
 .price-info {
   display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  flex-direction: column;
+  gap: 1rem; 
+  margin-top: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid #eee;
 }
+
 .price-item {
   display: flex;
   flex-direction: column;
+  gap: 0.35rem;
 }
+
 .price-item small {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #6c757d;
+  font-weight: 500;
 }
+
 .price-item strong {
-  font-size: 1.5rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0.2rem;
 }
+
 .price-item .current-bid {
   color: #8500cc;
 }
@@ -611,89 +774,142 @@ span {
   padding-top: 1rem;
   border-top: 1px solid #eee;
 }
-.seller-rating {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
 
 .description-section h2,
 .description-section h3 {
   margin-top: 0;
 }
+
 .description-section p {
   line-height: 1.6;
 }
 
 .auction-status-tag {
   background-color: #8500cc;
-  border-color: #8500cc; 
+  border-color: #8500cc;
 }
 
 .auction-status-tag .p-tag-value {
   color: #ffffff !important;
 }
 
+@media (min-width: 600px) {
+  .p-dataview-content .p-grid > div {
+    width: 50%;
+  }
+
+  .auction-image {
+    height: 200px;
+  }
+
+  .public-auctions-page .dataview-header {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Notebook e desktop */
+@media (min-width: 992px) {
+  .auction-grid {
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-areas:
+      "gallery info"
+      "gallery desc";
+    gap: 2rem;
+  }
+
+  .gallery-section {
+    grid-area: gallery;
+  }
+  .info-section {
+    grid-area: info;
+  }
+  .description-section {
+    grid-area: desc;
+  }
+
+  .info-section .auction-title {
+    font-size: 2.1rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .public-auctions-page .card {
+    max-width: 1200px;
+  }
+  .page-header h1 {
+    font-size: 2rem;
+  }
+  .p-dataview-content .p-grid > div {
+    width: 33.333%;
+  }
+}
+
+/* meu perfil */
 .profile-page-container {
-  max-width: 960px;
-  margin: 2rem auto;
+  width: 100%;
+  margin: 1rem auto;
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .profile-header-card {
   border-radius: 12px;
   border: none;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
 }
 
 .profile-header-content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .profile-avatar {
   width: 70px !important;
   height: 70px !important;
-  font-size: 2.5rem !important;
+  font-size: 2.3rem !important;
 }
 
 .user-info {
-  flex: 1;
+  text-align: center;
 }
 
 .user-name-roles {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 0.25rem;
+  gap: 0.5rem;
 }
 
 .user-name-roles h2 {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #111827;
 }
 
 .user-roles-container {
   display: flex;
   gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .user-email {
   margin: 0;
-  color: #6b7280;
   margin-bottom: 0.5rem;
+  color: #6b7280;
+  font-size: 0.95rem;
+  text-align: center;
 }
 
 .profile-rating {
   display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   font-size: 0.9rem;
   color: #4b5563;
@@ -701,4 +917,152 @@ span {
 
 .profile-tabs-card {
   border-radius: 12px;
+}
+
+@media (min-width: 640px) {
+  .profile-header-content {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+  }
+
+  .user-info {
+    text-align: left;
+  }
+
+  .user-name-roles {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-page-container {
+    max-width: 960px;
+    gap: 2rem;
+  }
+
+  .profile-header-card {
+    padding: 2rem;
+  }
+
+  .user-name-roles h2 {
+    font-size: 1.6rem;
+  }
+}
+
+.p-fluid .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.p-fluid .field label {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.p-tabview-nav li .p-tabview-nav-link {
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+}
+
+/* =========================================================
+   📱 1) MOBILE FIRST — estilo base
+   ========================================================= */
+
+/* Espaçamento interno */
+.auction-dialog .p-dialog-content {
+  padding: 1.5rem !important;
+}
+
+/* FORMULÁRIO */
+.auction-form .field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.2rem;
+}
+
+.dialog-image {
+  width: 100%;
+  max-width: 600px;
+  max-height: 400px;
+  object-fit: contain;
+}
+
+/* IMGFORM */
+.image-manager-title {
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.image-gallery-item {
+  position: relative;
+}
+
+.gallery-main-image {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.btn-delete-img {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none !important;
+}
+
+.gallery-thumbnail-image {
+  width: 70px;
+  height: 55px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* =========================================================
+   📱➡️💻 2) TABLETS (>= 768px)
+   ========================================================= */
+
+@media (min-width: 768px) {
+  .auction-dialog .p-dialog {
+    width: 80vw !important;
+    max-width: 700px !important;
+  }
+
+  .auction-dialog .p-dialog-content {
+    padding: 2rem !important;
+  }
+
+  .image-manager-title {
+    font-size: 1.25rem;
+  }
+
+  .gallery-thumbnail-image {
+    width: 85px;
+    height: 65px;
+  }
+}
+
+/* =========================================================
+   💻 3) DESKTOP / NOTEBOOK (>= 1024px)
+   ========================================================= */
+
+@media (min-width: 1024px) {
+  .auction-dialog .p-dialog {
+    width: 70vw !important;
+    max-width: 900px !important;
+  }
+
+  .auction-dialog .p-dialog-content {
+    padding: 2.2rem !important;
+  }
+
+  .gallery-thumbnail-image {
+    width: 95px;
+    height: 70px;
+  }
 }
