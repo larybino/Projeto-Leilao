@@ -154,7 +154,7 @@ public class AuctionService {
         Float highestBid = bidRepository.findHighestBidAmount(auction.getId())
                 .orElse(auction.getMinBid()); 
         dto.setCurrentPrice(highestBid);
-
+        dto.setEmailUserBid(auction.getEmailUserBid());
         if (auction.getSeller() != null) {
             AuctionDetailDTO.SellerInfoDTO sellerDTO = new AuctionDetailDTO.SellerInfoDTO();
             sellerDTO.setId(auction.getSeller().getId());

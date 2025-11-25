@@ -25,20 +25,22 @@ function AuctionDetailPage() {
   };
 
   useEffect(() => {
-    auctionService
-      .getPublicAuctionById(id)
-      .then((response) => {
-        setAuction(response.data);
-        document.title = `${response.data.title} — App Leilão`;
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 404) {
-          setError("Leilão não encontrado.");
-        } else {
-          setError("Ocorreu um erro ao carregar o leilão.");
-        }
-      })
-      .finally(() => setLoading(false));
+    
+      auctionService
+        .getPublicAuctionById(id)
+        .then((response) => {
+          setAuction(response.data);
+          document.title = `${response.data.title} — App Leilão`;
+        })
+        .catch((err) => {
+          if (err.response && err.response.status === 404) {
+            setError("Leilão não encontrado.");
+          } else {
+            setError("Ocorreu um erro ao carregar o leilão.");
+          }
+        })
+        .finally(() => setLoading(false));
+    
   }, [id]);
 
   if (loading) {

@@ -18,7 +18,6 @@ import com.github.larybino.leilao.model.dto.BidMessageRequest;
 import com.github.larybino.leilao.model.dto.BidMessageReponse;
 import com.github.larybino.leilao.security.JwtService;
 
-
 @Controller
 public class AuctionWebSocketController {
 
@@ -29,12 +28,12 @@ public class AuctionWebSocketController {
     @Autowired
     private PersonRepository personRepository;
     @Autowired
-    private JwtService jwtService; 
+    private JwtService jwtService;
 
-    @MessageMapping("/bid/{auctionId}") 
-    @SendTo("/topic/auction/{auctionId}") 
+    @MessageMapping("/bid/{auctionId}")
+    @SendTo("/topic/auction/{auctionId}")
     public BidMessageReponse handleBid(BidMessageRequest bidMessage) {
-        
+
         String userEmail = jwtService.extractUsername(bidMessage.getUserToken());
         Person bidder = personRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new BusinessException("Usuário não encontrado."));
@@ -45,7 +44,7 @@ public class AuctionWebSocketController {
         if (auction.getSeller().getId().equals(bidder.getId())) {
             throw new BusinessException("Você não pode dar lances no seu próprio leilão.");
         }
-        
+
         Float currentHighestBid = bidRepository.findHighestBidAmount(auction.getId())
                 .orElse(auction.getMinBid());
 
@@ -56,10 +55,12 @@ public class AuctionWebSocketController {
         newBid.setPerson(bidder);
         newBid.setAmount(newBidAmount);
         bidRepository.save(newBid);
+        auction.setEmailUserBid(bidder.getEmail());
+        auctionRepository.save(auction);
 
         return new BidMessageReponse(auction.getId(), bidder.getEmail(), newBid.getAmount());
     }
-    
+
     @MessageExceptionHandler
     @SendToUser("/topic/errors")
     public String handleException(BusinessException exception) {
