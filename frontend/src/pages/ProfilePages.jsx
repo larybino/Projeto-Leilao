@@ -73,9 +73,9 @@ function ProfilePage() {
 
             <div className="profile-tabs-card">
                 <TabView>
-                    <TabPanel header="Meus Leilões" leftIcon="pi pi-shopping-cart mr-2">
+                    {/* <TabPanel header="Meus Leilões" leftIcon="pi pi-shopping-cart mr-2">
                         <MyAuctionsPage />
-                    </TabPanel>
+                    </TabPanel> */}
                     <TabPanel header="Configurações" leftIcon="pi pi-cog mr-2">
                         <p>Opções para alterar senha e editar dados estarão aqui.</p>
                         <Button 
